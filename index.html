@@ -534,7 +534,7 @@ function senatorCard(sen,i){
       <p class="drawer-note">${t("emailNote")}</p>
       <textarea data-body>${escapeHtml(emailBody(sen,supporter.name))}</textarea>
       <div class="drawer-actions">
-        <button class="btn btn-accent" data-send><span aria-hidden="true">${icoMail()}</span><span>${t("emailSend")}</span></button>
+        <a class="btn btn-accent" data-send href="mailto:?subject=${encodeURIComponent(EMAIL_SUBJECT)}&body=${encodeURIComponent(emailBody(sen,supporter.name))}"><span aria-hidden="true">${icoMail()}</span><span>${t("emailSend")}</span></a>
         <button class="btn btn-ghost" data-copy><span aria-hidden="true">${icoCopy()}</span><span>${t("emailCopy")}</span></button>
       </div>
     </div>
@@ -546,14 +546,18 @@ function wireCard(sen,i){
   card.querySelector('[data-act="email"]').addEventListener("click",()=>card.querySelector('[data-drawer="email"]').classList.toggle("open"));
   card.querySelector('[data-act="save"]').addEventListener("click",()=>downloadVCard(sen));
   const bodyA=card.querySelector("[data-body]");
-  card.querySelector("[data-send]").addEventListener("click",()=>{window.location.href=`mailto:?subject=${encodeURIComponent(EMAIL_SUBJECT)}&body=${encodeURIComponent(bodyA.value)}`;setTimeout(markActed,800);});
+  const sendA=card.querySelector("[data-send]");
+  const setMailto=()=>sendA.setAttribute("href",`mailto:?subject=${encodeURIComponent(EMAIL_SUBJECT)}&body=${encodeURIComponent(bodyA.value)}`);
+  setMailto();
+  bodyA.addEventListener("input",setMailto);
+  sendA.addEventListener("click",()=>setTimeout(markActed,800));
   card.querySelector("[data-copy]").addEventListener("click",async e=>{const lbl=e.currentTarget.querySelector("span:last-child");try{await navigator.clipboard.writeText(`${EMAIL_SUBJECT}\n\n${bodyA.value}`);lbl.textContent=t("copied");setTimeout(()=>lbl.textContent=t("emailCopy"),1500);}catch(err){}markActed();});
 }
 let acted=false;
 function markActed(){ if(acted)return; acted=true; $("#toast").classList.add("show"); $("#cue").classList.add("hide"); }
 function hideToast(){ $("#toast").classList.remove("show"); }
 function toastShareAction(){ const txt=t("shareText"),url=PROD_URL; if(navigator.share){navigator.share({title:"Save Our Pigs",text:txt,url}).catch(()=>{});} else {$("#slide4").scrollIntoView({behavior:"smooth"});} hideToast(); }
-function refreshEmailBodies(){document.querySelectorAll(".sen").forEach(c=>{const i=+c.dataset.i,ta=c.querySelector("[data-body]");if(ta&&currentList[i])ta.value=emailBody(currentList[i],supporter.name);});}
+function refreshEmailBodies(){document.querySelectorAll(".sen").forEach(c=>{const i=+c.dataset.i,ta=c.querySelector("[data-body]");if(ta&&currentList[i]){ta.value=emailBody(currentList[i],supporter.name);const a=c.querySelector("[data-send]");if(a)a.setAttribute("href",`mailto:?subject=${encodeURIComponent(EMAIL_SUBJECT)}&body=${encodeURIComponent(ta.value)}`);}});}
 function downloadVCard(sen){
   const vcard=`BEGIN:VCARD\nVERSION:3.0\nN:${sen.last};${sen.first};;Sen.;\nFN:Sen. ${sen.full}\nORG:U.S. Senate\nTITLE:U.S. Senator (${STATE_NAMES[sen.state]||sen.state})\nTEL;TYPE=WORK,VOICE:${sen.phone}\nNOTE:Call to ask: strip the Save Our Bacon Act from the Farm Bill.\nEND:VCARD`;
   const blob=new Blob([vcard],{type:"text/vcard"});const url=URL.createObjectURL(blob);const a=document.createElement("a");a.href=url;a.download=`Sen_${sen.last}.vcf`;document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),2000);
