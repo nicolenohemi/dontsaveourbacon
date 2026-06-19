@@ -361,7 +361,7 @@ const I18N={
   stateLine:"Your senators for {state} — call both for the most impact.", searchAgain:"Not your state? Search again", senatorOf:"U.S. Senator · {state}", phoneNA:"phone unavailable",
   callBtn:"Call", emailBtn:"Email", saveBtn:"Save",
   callHeading:"What to say (in English) — about 30 seconds", emailHeading:"Send an email",
-  emailNote:"Pre-written in English so the office can read it. Edit anything, then send.", emailSend:"Open in mail app", emailCopy:"Copy text", copied:"Copied!", contactForm:"Senators don't publish email — reach their office online →",
+  emailNote:"Senate offices take messages by web form. Tap below to copy this and open the form — then paste.", formSend:"Copy message & open their form →", emailSend:"Open in mail app", emailCopy:"Copy text", copied:"Copied!", contactForm:"Senators don't publish email — reach their office online →",
   switchboard:`No answer? Call the U.S. Senate switchboard at ${A("tel:2022243121","202-224-3121")} and ask for your senator's office.`,
   step2_title:"Stay in the loop", step2_sub:"Add your details so your emails sign themselves — and we'll tell you when the vote moves.",
   namePh:"Your name", emailPh:"Email", phonePh:"Phone (optional)", optinLabel:"Keep me updated on the Save Our Bacon Act and how to help.",
@@ -391,7 +391,7 @@ const I18N={
   stateLine:"Tus senadores por {state} — llama a ambos para mayor impacto.", searchAgain:"¿No es tu estado? Buscar de nuevo", senatorOf:"Senador(a) de EE. UU. · {state}", phoneNA:"teléfono no disponible",
   callBtn:"Llamar", emailBtn:"Correo", saveBtn:"Guardar",
   callHeading:"Qué decir (en inglés) — unos 30 segundos", emailHeading:"Enviar un correo",
-  emailNote:"Redactado en inglés para que la oficina pueda leerlo. Edita lo que quieras y envíalo.", emailSend:"Abrir en la app de correo", emailCopy:"Copiar texto", copied:"¡Copiado!", contactForm:"Los senadores no publican correo — contáctalos en línea →",
+  emailNote:"Las oficinas del Senado reciben mensajes por formulario web. Toca abajo para copiarlo y abrir el formulario; luego pega.", formSend:"Copiar mensaje y abrir su formulario →", emailSend:"Abrir en la app de correo", emailCopy:"Copiar texto", copied:"¡Copiado!", contactForm:"Los senadores no publican correo — contáctalos en línea →",
   switchboard:`¿Sin respuesta? Llama a la centralita del Senado al ${A("tel:2022243121","202-224-3121")} y pide la oficina de tu senador.`,
   step2_title:"Mantente al tanto", step2_sub:"Agrega tus datos para que tus correos se firmen solos — y te avisaremos cuando avance la votación.",
   namePh:"Tu nombre", emailPh:"Correo", phonePh:"Teléfono (opcional)", optinLabel:"Mantenme informado(a) sobre la Ley Save Our Bacon y cómo ayudar.",
@@ -421,7 +421,7 @@ const I18N={
   stateLine:"您在{state}的参议员 — 两位都致电，效果最佳。", searchAgain:"不是您所在的州？重新搜索", senatorOf:"美国参议员 · {state}", phoneNA:"电话不可用",
   callBtn:"致电", emailBtn:"邮件", saveBtn:"保存",
   callHeading:"通话内容（用英语）— 约 30 秒", emailHeading:"发送邮件",
-  emailNote:"已用英文写好，方便办公室阅读。可随意修改后发送。", emailSend:"在邮件应用中打开", emailCopy:"复制文本", copied:"已复制！", contactForm:"参议员不公开邮箱——在线联系他们的办公室 →",
+  emailNote:"参议院办公室通过网页表单接收信息。点击下方复制并打开表单，然后粘贴即可。", formSend:"复制信息并打开联系表单 →", emailSend:"在邮件应用中打开", emailCopy:"复制文本", copied:"已复制！", contactForm:"参议员不公开邮箱——在线联系他们的办公室 →",
   switchboard:`无人接听？拨打美国参议院总机 ${A("tel:2022243121","202-224-3121")}，要求转接您的参议员办公室。`,
   step2_title:"保持关注", step2_sub:"留下您的信息，邮件将自动署名 — 投票一有进展我们会通知您。",
   namePh:"您的姓名", emailPh:"电子邮箱", phonePh:"电话（可选）", optinLabel:"请向我更新《Save Our Bacon Act》的进展以及如何提供帮助。",
@@ -534,11 +534,11 @@ function senatorCard(sen,i){
       <h4>${t("emailHeading")}</h4>
       <p class="drawer-note">${t("emailNote")}</p>
       <textarea data-body>${escapeHtml(emailBody(sen,supporter.name))}</textarea>
-      <div class="drawer-actions">
-        <a class="btn btn-accent" data-send target="_blank" rel="noopener" href="mailto:?subject=${encodeURIComponent(EMAIL_SUBJECT)}&body=${encodeURIComponent(emailBody(sen,supporter.name))}"><span aria-hidden="true">${icoMail()}</span><span>${t("emailSend")}</span></a>
+      <a class="btn btn-accent btn-block" data-form target="_blank" rel="noopener" href="${escapeHtml(sen.contactForm||sen.url||'#')}"><span aria-hidden="true">${icoCopy()}</span><span>${t("formSend")}</span></a>
+      <div class="drawer-actions" style="margin-top:10px">
+        <a class="btn btn-ghost" data-send target="_blank" rel="noopener" href="mailto:?subject=${encodeURIComponent(EMAIL_SUBJECT)}&body=${encodeURIComponent(emailBody(sen,supporter.name))}"><span aria-hidden="true">${icoMail()}</span><span>${t("emailSend")}</span></a>
         <button class="btn btn-ghost" data-copy><span aria-hidden="true">${icoCopy()}</span><span>${t("emailCopy")}</span></button>
       </div>
-      ${(sen.contactForm||sen.url)?`<a class="contactform" href="${escapeHtml(sen.contactForm||sen.url)}" target="_blank" rel="noopener">${t("contactForm")}</a>`:""}
     </div>
   </div>`;
 }
@@ -553,6 +553,8 @@ function wireCard(sen,i){
   setMailto();
   bodyA.addEventListener("input",setMailto);
   sendA.addEventListener("click",()=>setTimeout(markActed,800));
+  const formA=card.querySelector("[data-form]");
+  if(formA) formA.addEventListener("click",async()=>{try{await navigator.clipboard.writeText(`${EMAIL_SUBJECT}\n\n${bodyA.value}`);}catch(e){}setTimeout(markActed,800);});
   card.querySelector("[data-copy]").addEventListener("click",async e=>{const lbl=e.currentTarget.querySelector("span:last-child");try{await navigator.clipboard.writeText(`${EMAIL_SUBJECT}\n\n${bodyA.value}`);lbl.textContent=t("copied");setTimeout(()=>lbl.textContent=t("emailCopy"),1500);}catch(err){}markActed();});
 }
 let acted=false;
