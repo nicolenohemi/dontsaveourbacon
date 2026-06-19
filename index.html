@@ -134,7 +134,9 @@
 
   footer{margin-top:30px;padding-top:22px;border-top:1px solid var(--line);color:var(--muted);font-size:13px;line-height:1.5}
   footer .src{margin-top:8px}
-  .credit{margin-top:18px;text-align:center;font-family:"Fraunces",serif;font-style:italic;font-size:16px;color:var(--accent-deep)}
+  .credit{margin-top:18px;text-align:center;font-family:"Fraunces",serif;font-style:italic;font-weight:400;font-size:14px;color:var(--muted)}
+  .credit a{color:var(--muted);text-decoration:underline;text-underline-offset:2px}
+  .credit a:hover{color:var(--accent-deep)}
   .credit .heart{font-style:normal}
 </style>
 </head>
@@ -233,7 +235,7 @@
         <span data-i18n-html="footerMain"></span>
         <div class="src" data-i18n="footerSrc"></div>
       </footer>
-      <p class="credit"><span data-i18n="createdBy">Created by Joy Bardess</span> <span class="heart">🐖</span></p>
+      <p class="credit"><span data-i18n-html="createdBy">Created by Joy Bardess</span> <span class="heart">🐖</span></p>
     </div>
   </section>
 
@@ -304,7 +306,7 @@ const I18N={
   shareNativeLabel:"Share this page", shareText:"Stop the Save Our Bacon Act — it would force pregnant pigs back into cages and nullify animal-welfare laws voters passed. Call your senators, it takes 2 minutes:",
   footerMain:`No login. No tracking. Senator names, parties, and official DC phone numbers come from the public ${A("https://github.com/unitedstates/congress-legislators","congress-legislators")} dataset; photos from the unitedstates project.`,
   footerSrc:"Sources: ASPCA · The New Lede · Humane World for Animals · Harvard Law School Animal Law & Policy Program · Animal Equality · Our Hen House.",
-  createdBy:"Created by Joy Bardess", scrollCue:"Scroll",
+  createdBy:'Created by <a href="https://joybardess.com" target="_blank" rel="noopener">Joy Bardess</a>', scrollCue:"Scroll",
   party:{Democrat:"Democrat",Republican:"Republican",Independent:"Independent"},
   acc:[
    {q:"What is the Save Our Bacon Act?", a:`<p>The Save Our Bacon Act (${A(LK.hr,"H.R. 4673")}, sponsored by Rep. Ashley Hinson) is a provision in the 2026 Farm Bill that would nullify voter-approved state bans on cruel farming practices — including gestation crates for pigs, battery cages for egg-laying hens, and veal crates for calves.</p><p>It specifically targets California's ${A(LK.p12,"Prop 12")} and Massachusetts's ${A(LK.q3,"Question 3")}, both passed directly by voters. It's a rebranded version of the earlier ${A(LK.eats,"EATS Act")}. The House passed it largely on party lines in April 2026, and it now moves to the Senate.</p>`},
@@ -332,7 +334,7 @@ const I18N={
   shareNativeLabel:"Comparte esta página", shareText:"Detén la Ley Save Our Bacon: obligaría a las cerdas preñadas a volver a jaulas y anularía leyes de bienestar animal aprobadas por votantes. Llama a tus senadores, toma 2 minutos:",
   footerMain:`Sin inicio de sesión. Sin rastreo. Los nombres, partidos y teléfonos oficiales provienen del conjunto de datos público ${A("https://github.com/unitedstates/congress-legislators","congress-legislators")}; las fotos, del proyecto unitedstates.`,
   footerSrc:"Fuentes: ASPCA · The New Lede · Humane World for Animals · Harvard Law School Animal Law & Policy Program · Animal Equality · Our Hen House.",
-  createdBy:"Creado por Joy Bardess", scrollCue:"Desliza",
+  createdBy:'Creado por <a href="https://joybardess.com" target="_blank" rel="noopener">Joy Bardess</a>', scrollCue:"Desliza",
   party:{Democrat:"Demócrata",Republican:"Republicano",Independent:"Independiente"},
   acc:[
    {q:"¿Qué es la Ley Save Our Bacon?", a:`<p>La Ley Save Our Bacon (${A(LK.hr,"H.R. 4673")}, presentada por la representante Ashley Hinson) es una disposición de la Ley Agrícola (Farm Bill) de 2026 que anularía las prohibiciones estatales —aprobadas por votantes— contra prácticas ganaderas crueles, incluidas las jaulas de gestación para cerdas, las jaulas en batería para gallinas ponedoras y las jaulas para terneros.</p><p>Apunta específicamente contra la ${A(LK.p12,"Proposición 12")} de California y la ${A(LK.q3,"Pregunta 3")} de Massachusetts, ambas aprobadas directamente por los votantes. Es una versión rebautizada de la anterior ${A(LK.eats,"Ley EATS")}. La Cámara la aprobó en gran medida por líneas partidistas en abril de 2026, y ahora pasa al Senado.</p>`},
@@ -360,7 +362,7 @@ const I18N={
   shareNativeLabel:"分享此页面", shareText:"阻止《Save Our Bacon Act》——它会把怀孕母猪重新关进笼子，并废除选民通过的动物福利法律。给您的参议员打电话，只需 2 分钟：",
   footerMain:`无需登录。不做追踪。参议员姓名、党派及华盛顿办公室官方电话来自公开数据集 ${A("https://github.com/unitedstates/congress-legislators","congress-legislators")}；照片来自 unitedstates 项目。`,
   footerSrc:"资料来源：ASPCA · The New Lede · Humane World for Animals · 哈佛法学院动物法律与政策项目 · Animal Equality · Our Hen House。",
-  createdBy:"由 Joy Bardess 制作", scrollCue:"向下滑动",
+  createdBy:'由 <a href="https://joybardess.com" target="_blank" rel="noopener">Joy Bardess</a> 制作', scrollCue:"向下滑动",
   party:{Democrat:"民主党",Republican:"共和党",Independent:"无党派"},
   acc:[
    {q:"什么是《Save Our Bacon Act》？", a:`<p>《Save Our Bacon Act》（${A(LK.hr,"H.R. 4673")}，由众议员 Ashley Hinson 提出）是 2026 年《农业法案》中的一项条款，将废除由选民批准、禁止残忍养殖方式的州级法律——包括给母猪用的妊娠定位栏、给蛋鸡用的层叠笼，以及给小牛用的犊牛栏。</p><p>它专门针对加州的 ${A(LK.p12,"第12号提案（Prop 12）")} 和马萨诸塞州的 ${A(LK.q3,"第3号公投（Question 3）")}，两者均由选民直接通过。它是早前 ${A(LK.eats,"《EATS 法案》")} 的改名版本。众议院已于 2026 年 4 月基本按党派立场通过，现已移交参议院。</p>`},
