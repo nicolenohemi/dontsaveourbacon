@@ -283,8 +283,6 @@
       <h2 class="voices-h" data-i18n="voicesTitle">People are fighting this</h2>
       <p class="step-sub" data-i18n="voicesSub">You're not alone.</p>
       <div class="voices" id="voices"></div>
-      <div class="roster" id="roster"></div>
-      <p class="roster-more" data-i18n="rosterMore">…and 6,600+ more.</p>
 
       <footer>
         <span data-i18n-html="footerMain"></span>
@@ -307,12 +305,6 @@ const SIGNUP_FORM = "supporters";   // Netlify form name → dashboard ▸ Forms
 const TWEETS=[
   {name:"Lewis Bollard", handle:"@Lewis_Bollard", url:"https://twitter.com/Lewis_Bollard/status/2051344654063501671"},
   {name:"Liv Boeree", handle:"@Liv_Boeree", url:"https://twitter.com/Liv_Boeree/status/2049612056224309561"}
-];
-const ROSTER=[
-  {key:"farmers", names:["Clemens Food Group","Niman Ranch","Iowa Select","JBS","American Meat Producer Association","Russ Kremer","Brad Clemens","Jonathan Buttram"]},
-  {key:"lawmakers", names:["Sen. Cory Booker (D-NJ)","Texas Ag. Comm. Sid Miller (R)","Rep. Jim McGovern (D-MA)","Rep. Jim Costa (D-CA)","Rep. Zoe Lofgren (D-CA)","Rep. Lateefah Simon (D-CA)","30 senators · 16 state AGs"]},
-  {key:"welfare", names:["ASPCA","Humane World for Animals","Animal Equality","Animal Legal Defense Fund","Animal Wellness Action","Center for a Humane Economy","Compassion in World Farming","Harvard Law (Stilt, McGill)"]},
-  {key:"states", names:["Moms for America","National Governors Association","Nat'l Conf. of State Legislatures"]}
 ];
 
 let senatorsByState=null, currentList=[], currentStateAbbr=null, currentLang="en";
@@ -621,9 +613,6 @@ function renderVoices(){
   s.onload=()=>{ if(window.twttr&&window.twttr.widgets) window.twttr.widgets.load(); };
   document.body.appendChild(s);
 }
-function renderRoster(){
-  $("#roster").innerHTML=ROSTER.map(g=>`<div class="roster-group"><div class="roster-label">${t("roster_"+g.key)}</div><div class="chips">${g.names.map(n=>`<span class="chip">${escapeHtml(n)}</span>`).join("")}</div></div>`).join("");
-}
 
 /* ============== apply language ============== */
 function applyLang(lang){
@@ -633,7 +622,7 @@ function applyLang(lang){
   document.querySelectorAll("[data-i18n-html]").forEach(el=>el.innerHTML=t(el.dataset.i18nHtml));
   document.querySelectorAll("[data-i18n-ph]").forEach(el=>el.placeholder=t(el.dataset.i18nPh));
   document.querySelectorAll(".langs button").forEach(b=>b.classList.toggle("on",b.dataset.lang===lang));
-  applyStatus(); renderAccordion(); renderShare(); renderVoices(); renderRoster();
+  applyStatus(); renderAccordion(); renderShare(); renderVoices();
   if(currentStateAbbr) renderSenators();
 }
 
