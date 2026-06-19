@@ -1,0 +1,586 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>Save Our Pigs — Stop the Save Our Bacon Act</title>
+<meta name="description" content="Call or email your two U.S. senators in two minutes and ask them to strip the Save Our Bacon Act from the Farm Bill." />
+<link rel="canonical" href="https://saveourpigs.com/" />
+<meta property="og:title" content="Save Our Pigs" />
+<meta property="og:description" content="Call your senators in 2 minutes — stop the Save Our Bacon Act." />
+<meta property="og:url" content="https://saveourpigs.com/" />
+<meta property="og:type" content="website" />
+<meta name="theme-color" content="#f6f1ea" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,600;1,9..144,500&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<style>
+  :root{
+    --bg:#f6f1ea; --bg2:#efe7db; --card:#fffdf8; --ink:#241f1b; --muted:#7a7065;
+    --line:#e7ddcd; --accent:#c64a33; --accent-deep:#a83a25; --accent-soft:#fbe9e3;
+    --blush:#f3b6a8; --blush-soft:#f9ddd4; --good:#3a8060;
+    --radius:22px; --maxw:540px;
+  }
+  *{box-sizing:border-box}
+  html,body{height:100%;margin:0;padding:0}
+  body{background:var(--bg);color:var(--ink);font-family:"Inter",system-ui,-apple-system,sans-serif;font-size:17px;line-height:1.55;-webkit-font-smoothing:antialiased;overflow:hidden}
+  a{color:var(--accent-deep)}
+  .serif{font-family:"Fraunces",Georgia,serif}
+
+  /* ===== deck / slides ===== */
+  .deck{height:100dvh;overflow-y:auto;scroll-snap-type:y proximity;scroll-behavior:smooth;-webkit-overflow-scrolling:touch}
+  .slide{min-height:100dvh;scroll-snap-align:start;display:flex;flex-direction:column;justify-content:center;padding:84px 30px 96px;position:relative}
+  @media(max-width:430px){.slide{padding-right:34px}}
+  .slide-inner{max-width:var(--maxw);margin:0 auto;width:100%}
+
+  /* ===== top bars ===== */
+  .langs{position:fixed;top:14px;right:16px;z-index:30;display:flex;align-items:center;gap:6px;background:rgba(255,253,248,.82);backdrop-filter:blur(8px);border:1px solid var(--line);border-radius:999px;padding:5px 10px;font-size:13px;font-weight:600}
+  .langs button{background:none;border:none;cursor:pointer;color:var(--muted);font:inherit;padding:2px 5px;border-radius:8px}
+  .langs button.on{color:var(--accent-deep)}
+  .langs .sep{color:var(--line)}
+
+  .dots{position:fixed;right:14px;top:50%;transform:translateY(-50%);z-index:30;display:flex;flex-direction:column;gap:11px}
+  .dots button{width:9px;height:9px;border-radius:50%;border:none;background:var(--blush-soft);cursor:pointer;padding:0;transition:.25s}
+  .dots button.on{background:var(--accent);transform:scale(1.45)}
+
+  .scrollcue{position:fixed;left:50%;transform:translateX(-50%);bottom:18px;z-index:25;display:flex;flex-direction:column;align-items:center;gap:2px;color:var(--muted);font-size:11px;letter-spacing:.08em;text-transform:uppercase;cursor:pointer;transition:opacity .3s;animation:bob 1.8s ease-in-out infinite;background:rgba(246,241,234,.82);backdrop-filter:blur(6px);padding:7px 14px 5px;border-radius:999px;border:1px solid var(--line)}
+  .scrollcue.hide{opacity:0}
+  .scrollcue svg{width:20px;height:20px}
+  @keyframes bob{0%,100%{transform:translateX(-50%) translateY(0)}50%{transform:translateX(-50%) translateY(5px)}}
+
+  /* ===== hero / cute ===== */
+  .hero{text-align:center;margin-bottom:26px}
+  .piglogo{width:72px;height:72px;margin:0 auto 6px;display:block;filter:drop-shadow(0 6px 14px rgba(198,74,51,.18))}
+  h1{font-family:"Fraunces",Georgia,serif;font-weight:600;font-size:clamp(40px,11vw,60px);line-height:.98;letter-spacing:-.01em;margin:0;color:var(--accent-deep)}
+  .squiggle{display:block;margin:2px auto 0;width:190px;max-width:62%;height:13px;color:var(--blush)}
+  .subtitle{font-size:clamp(15px,2.4vw,18px);color:var(--muted);font-weight:500;margin:12px 0 0}
+
+  /* ===== steps ===== */
+  .step-head{display:flex;align-items:center;gap:12px;margin-bottom:6px}
+  .stepnum{width:34px;height:34px;border-radius:50%;background:var(--accent);color:#fff;font-family:"Fraunces",serif;font-weight:600;font-size:17px;display:flex;align-items:center;justify-content:center;flex:none;box-shadow:0 4px 12px -4px rgba(198,74,51,.5)}
+  .step-head h2{font-family:"Fraunces",serif;font-size:clamp(22px,5vw,30px);font-weight:600;letter-spacing:-.01em;margin:0}
+  .step-sub{color:var(--muted);margin:0 0 18px;font-size:15px}
+
+  /* ===== controls ===== */
+  .btn{font:inherit;font-weight:600;border:none;cursor:pointer;border-radius:14px;padding:14px 18px;transition:.15s;display:inline-flex;align-items:center;gap:8px;justify-content:center;text-decoration:none}
+  .btn-primary{background:var(--ink);color:#fff} .btn-primary:hover{background:#000}
+  .btn-accent{background:var(--accent);color:#fff;box-shadow:0 6px 16px -8px rgba(198,74,51,.6)} .btn-accent:hover{background:var(--accent-deep)}
+  .btn-ghost{background:#fff;border:1px solid var(--line);color:var(--ink)} .btn-ghost:hover{background:var(--bg)}
+  .btn-block{width:100%}
+  .btn:focus-visible,a:focus-visible,input:focus-visible{outline:3px solid var(--accent-soft);outline-offset:2px}
+  input[type=text],input[type=email],input[type=tel]{font:inherit;padding:14px 16px;border:1px solid var(--line);border-radius:14px;background:#fff;color:var(--ink);outline:none;width:100%}
+  input:focus{border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-soft)}
+  .ico{width:18px;height:18px;flex:none}
+  .linklike{background:none;border:none;color:var(--accent-deep);font:inherit;font-weight:600;cursor:pointer;padding:0;text-decoration:underline}
+  .is-hidden{display:none !important}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);box-shadow:0 1px 0 rgba(0,0,0,.02),0 14px 30px -22px rgba(120,60,40,.4)}
+
+  /* ===== locate ===== */
+  .panel{padding:20px}
+  .status{display:flex;align-items:center;gap:12px;color:var(--muted);font-size:15px}
+  .spinner{width:18px;height:18px;border:2px solid var(--line);border-top-color:var(--accent);border-radius:50%;animation:spin .8s linear infinite;flex:none}
+  @keyframes spin{to{transform:rotate(360deg)}}
+  .zip-row{display:flex;gap:10px;margin-top:14px}
+
+  /* ===== senators ===== */
+  #senators{margin-top:18px;display:grid;gap:16px}
+  .state-line{margin:2px 0 4px;color:var(--muted)}
+  .state-line strong{color:var(--ink)}
+  .sen{overflow:hidden}
+  .sen-head{display:flex;gap:15px;padding:18px 18px 0}
+  .photo{width:74px;height:90px;border-radius:14px;object-fit:cover;background:var(--line);flex:none;border:1px solid var(--line)}
+  .photo-fallback{display:flex;align-items:center;justify-content:center;background:var(--blush-soft);color:var(--blush)}
+  .sen-meta{flex:1;min-width:0}
+  .sen-tag{font-size:12px;letter-spacing:.05em;text-transform:uppercase;color:var(--muted)}
+  .sen-name{font-family:"Fraunces",serif;font-size:23px;font-weight:600;line-height:1.08;margin:3px 0 4px}
+  .sen-phone{margin-top:6px;font-variant-numeric:tabular-nums;color:var(--accent-deep);font-weight:600}
+  .actions{display:grid;grid-template-columns:2fr 1fr 1fr;gap:9px;padding:14px 18px 18px}
+  .actions .btn{padding:13px 6px;font-size:15px}
+
+  .drawer{border-top:1px solid var(--line);padding:18px;display:none}
+  .drawer.open{display:block;animation:fade .22s ease}
+  @keyframes fade{from{opacity:0;transform:translateY(-4px)}to{opacity:1;transform:none}}
+  .drawer h4{margin:0 0 10px;font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+  .bullets{margin:0;padding-left:20px} .bullets li{margin:8px 0}
+  textarea{width:100%;font:inherit;font-size:15px;line-height:1.5;border:1px solid var(--line);border-radius:14px;padding:14px;background:#fff;color:var(--ink);resize:vertical;min-height:180px;outline:none}
+  textarea:focus{border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-soft)}
+  .drawer-note{font-size:13px;color:var(--muted);margin:0 0 12px}
+  .drawer-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:6px}
+  .switchboard{margin-top:6px;font-size:14px;color:var(--muted);text-align:center;padding:4px 0}
+
+  /* ===== signup ===== */
+  .signup{padding:20px;display:grid;gap:12px}
+  .signup .grid2{display:grid;gap:12px}
+  @media(min-width:520px){.signup .grid2{grid-template-columns:1fr 1fr}}
+  .check{display:flex;gap:10px;align-items:flex-start;font-size:14px;color:var(--muted);cursor:pointer}
+  .check input{width:auto;margin-top:3px}
+  .success{padding:20px}
+  .success strong{display:block;margin-bottom:4px;font-family:"Fraunces",serif;font-size:19px}
+
+  /* ===== accordion ===== */
+  .acc{display:grid;gap:10px}
+  .acc-item{overflow:hidden}
+  .acc-q{width:100%;text-align:left;background:none;border:none;font:inherit;font-weight:600;font-size:16px;color:var(--ink);padding:16px 18px;cursor:pointer;display:flex;justify-content:space-between;align-items:center;gap:12px}
+  .acc-q .chev{transition:transform .2s;flex:none;color:var(--muted)}
+  .acc-item.open .acc-q .chev{transform:rotate(180deg)}
+  .acc-a{display:none;padding:0 18px 18px;color:var(--muted);font-size:15px}
+  .acc-item.open .acc-a{display:block}
+  .acc-a ul{margin:0;padding-left:20px} .acc-a li{margin:9px 0} .acc-a strong{color:var(--ink)}
+  .acc-a p{margin:0 0 10px}
+
+  /* ===== share ===== */
+  .share-row{display:flex;flex-wrap:wrap;gap:10px;margin-top:10px}
+  .share-row .btn{flex:1;min-width:130px}
+
+  footer{margin-top:30px;padding-top:22px;border-top:1px solid var(--line);color:var(--muted);font-size:13px;line-height:1.5}
+  footer .src{margin-top:8px}
+  .credit{margin-top:18px;text-align:center;font-family:"Fraunces",serif;font-style:italic;font-size:16px;color:var(--accent-deep)}
+  .credit .heart{font-style:normal}
+</style>
+</head>
+<body>
+
+<!-- language switch -->
+<nav class="langs" aria-label="Language">
+  <button data-lang="en">EN</button><span class="sep">|</span>
+  <button data-lang="es">ES</button><span class="sep">|</span>
+  <button data-lang="zh">中文</button>
+</nav>
+
+<!-- progress dots -->
+<nav class="dots" id="dots" aria-label="Steps"></nav>
+
+<!-- scroll cue -->
+<div class="scrollcue" id="cue"><span data-i18n="scrollCue">Scroll</span>
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+</div>
+
+<div class="deck" id="deck">
+
+  <!-- ===== SLIDE 1: hero + action ===== -->
+  <section class="slide" id="slide1">
+    <div class="slide-inner">
+      <div class="hero">
+        <svg class="piglogo" viewBox="0 0 64 64" aria-hidden="true">
+          <path d="M14 16c-2-6 4-8 8-4l3 3" fill="#f3b6a8"/><path d="M50 16c2-6-4-8-8-4l-3 3" fill="#f3b6a8"/>
+          <circle cx="32" cy="35" r="21" fill="#f6c3b6"/>
+          <ellipse cx="32" cy="40" rx="11" ry="8.5" fill="#ec9c8b"/>
+          <ellipse cx="28" cy="40" rx="1.9" ry="2.6" fill="#b9543f"/><ellipse cx="36" cy="40" rx="1.9" ry="2.6" fill="#b9543f"/>
+          <circle cx="24.5" cy="30" r="2.3" fill="#3b2a23"/><circle cx="39.5" cy="30" r="2.3" fill="#3b2a23"/>
+        </svg>
+        <h1>Save Our Pigs</h1>
+        <svg class="squiggle" viewBox="0 0 200 12" fill="none" aria-hidden="true"><path d="M2 7C26 1 38 11 62 7s36-9 60-4 38 7 76 1" stroke="currentColor" stroke-width="3.4" stroke-linecap="round"/></svg>
+        <p class="subtitle" data-i18n="subtitle">by stopping the Save Our Bacon Act</p>
+      </div>
+
+      <div class="step-head"><span class="stepnum">1</span><h2 data-i18n="step1_title">Call or email your senators</h2></div>
+      <p class="step-sub" data-i18n="step1_sub">It takes two minutes. We pull up your senators automatically.</p>
+
+      <div class="card panel" id="locate">
+        <div class="status" id="status"><span class="spinner" id="spin"></span><span id="statusText"></span></div>
+        <div class="zip-row is-hidden" id="zipRow">
+          <input type="text" id="zip" inputmode="numeric" maxlength="5" data-i18n-ph="zipPh" autocomplete="postal-code" aria-label="ZIP code" />
+          <button class="btn btn-primary" id="zipBtn" data-i18n="findBtn">Find</button>
+        </div>
+        <button class="linklike is-hidden" id="manualLink" style="margin-top:12px" data-i18n="zipInstead">Enter ZIP code instead</button>
+      </div>
+
+      <div id="senators"></div>
+    </div>
+  </section>
+
+  <!-- ===== SLIDE 2: stay in touch ===== -->
+  <section class="slide" id="slide2">
+    <div class="slide-inner">
+      <div class="step-head"><span class="stepnum">2</span><h2 data-i18n="step2_title">Stay in the loop</h2></div>
+      <p class="step-sub" data-i18n="step2_sub">Add your details so your emails sign themselves — and we'll tell you when the vote moves.</p>
+      <form class="card signup" id="signup" name="supporters" method="POST" data-netlify="true" netlify-honeypot="bot-field" novalidate>
+        <input type="hidden" name="form-name" value="supporters" />
+        <p class="is-hidden"><label>Don't fill this out: <input name="bot-field" /></label></p>
+        <input type="text"  id="suName"  name="name"  data-i18n-ph="namePh" autocomplete="name" />
+        <div class="grid2">
+          <input type="email" id="suEmail" name="email" data-i18n-ph="emailPh" autocomplete="email" />
+          <input type="tel"   id="suPhone" name="phone" data-i18n-ph="phonePh" autocomplete="tel" />
+        </div>
+        <label class="check"><input type="checkbox" id="suOptin" name="optin" value="yes" checked /> <span data-i18n="optinLabel">Keep me updated.</span></label>
+        <button type="submit" class="btn btn-accent btn-block" data-i18n="submitBtn">Count me in</button>
+      </form>
+      <div class="card success is-hidden" id="signupDone">
+        <strong data-i18n="successTitle">You're in. Thank you.</strong>
+        <span data-i18n="successBody">Your name will now auto-sign the senator emails.</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== SLIDE 3: learn more ===== -->
+  <section class="slide" id="slide3">
+    <div class="slide-inner">
+      <div class="step-head"><span class="stepnum">3</span><h2 data-i18n="step3_title">Learn more</h2></div>
+      <p class="step-sub" data-i18n="step3_sub">The short version is above. The detail is here.</p>
+      <div class="acc" id="acc"></div>
+    </div>
+  </section>
+
+  <!-- ===== SLIDE 4: share ===== -->
+  <section class="slide" id="slide4">
+    <div class="slide-inner">
+      <div class="step-head"><span class="stepnum">4</span><h2 data-i18n="step4_title">Share</h2></div>
+      <p class="step-sub" data-i18n="step4_sub">Every call counts. The fastest way to stop this is more people making them.</p>
+      <button class="btn btn-accent btn-block" id="shareNative"><span id="shareNativeLabel" data-i18n="shareNativeLabel">Share this page</span></button>
+      <div class="share-row" id="shareRow"></div>
+
+      <footer>
+        <span data-i18n-html="footerMain"></span>
+        <div class="src" data-i18n="footerSrc"></div>
+      </footer>
+      <p class="credit"><span data-i18n="createdBy">Created by Joy Bardess</span> <span class="heart">🐖</span></p>
+    </div>
+  </section>
+
+</div>
+
+<script>
+/* ============== config ============== */
+const DATA_URL   = "https://unitedstates.github.io/congress-legislators/legislators-current.json";
+const PHOTO_BASE = "https://unitedstates.github.io/images/congress/450x550/";
+const CACHE_KEY  = "sop-sen-v1";
+const CACHE_TTL  = 7*24*60*60*1000;
+const PROD_URL   = "https://saveourpigs.com/";
+const SIGNUP_FORM = "supporters";   // Netlify form name → dashboard ▸ Forms
+
+let senatorsByState=null, currentList=[], currentStateAbbr=null, currentLang="en";
+const supporter={name:"",email:"",phone:""};
+let curStatus={key:"locating",params:{},spin:true};
+
+/* ============== content sent to senators (kept in English) ============== */
+const CALL_BULLETS=[
+  "Hi, my name is [name] and I'm a constituent calling from [town].",
+  "I'm asking the Senator to oppose any version of the Farm Bill that includes the Save Our Bacon Act language.",
+  "It would overturn Prop 12 and other animal-welfare laws that voters passed directly at the ballot box.",
+  "This is a states' rights and food-safety issue — a Harvard report found it threatens hundreds of state disease and public-health laws.",
+  "Please ask the Senator to make sure that language is stripped from the Farm Bill. Thank you."
+];
+const EMAIL_SUBJECT="Please strip the Save Our Bacon Act from the Farm Bill";
+function emailBody(sen,name){
+  const signer=(name&&name.trim())?name.trim():"[Your name]";
+  return `Dear Senator ${sen.last},\n\n`
+   +`As your constituent, I'm urging you to oppose any version of the Farm Bill that includes the Save Our Bacon Act (H.R. 4673). `
+   +`It would nullify Prop 12 and other animal-welfare laws that voters approved directly. `
+   +`A Harvard Law School analysis found it would also threaten hundreds of state laws protecting public health and food safety. `
+   +`This is as much a states' rights issue as an animal-welfare one. `
+   +`Please work to ensure this language is removed before the bill reaches the floor.\n\n`
+   +`Thank you,\n${signer}, [Town, State]`;
+}
+
+/* ============== source links (shared across languages) ============== */
+const LK={
+  hr:"https://www.congress.gov/bill/119th-congress/house-bill/4673",
+  p12:"https://en.wikipedia.org/wiki/2018_California_Proposition_12",
+  q3:"https://en.wikipedia.org/wiki/2016_Massachusetts_Question_3",
+  eats:"https://en.wikipedia.org/wiki/EATS_Act",
+  harvard:"https://animal.law.harvard.edu/"
+};
+const A=(href,txt)=>`<a href="${href}" target="_blank" rel="noopener">${txt}</a>`;
+
+/* ============== i18n ============== */
+const I18N={
+ en:{
+  subtitle:"by stopping the Save Our Bacon Act",
+  step1_title:"Call or email your senators", step1_sub:"It takes two minutes. We pull up your senators automatically.",
+  locating:"Finding your senators by location…", zipPh:"Enter your ZIP code", findBtn:"Find", zipInstead:"Enter ZIP code instead",
+  locOff:"Location off — no problem. Enter your ZIP code:", enterZip:"Enter your ZIP code to find your senators:", cantRead:"Couldn't read your location. Enter your ZIP code:",
+  loadingSens:"Loading your senators…", loadErr:"Couldn't load senator data — check your connection and reload.", noMatch:"We couldn't match that location. Try your ZIP code:",
+  invalidZip:"Please enter a valid 5-digit ZIP code.", zipFail:"That ZIP didn't resolve. Double-check and try again.",
+  stateLine:"Your senators for {state} — call both for the most impact.", senatorOf:"U.S. Senator · {state}", phoneNA:"phone unavailable",
+  callBtn:"Call", emailBtn:"Email", saveBtn:"Save",
+  callHeading:"What to say (in English) — about 30 seconds", emailHeading:"Send an email",
+  emailNote:"Pre-written in English so the office can read it. Edit anything, then send.", emailSend:"Open in mail app", emailCopy:"Copy text", copied:"Copied!",
+  switchboard:`No answer? Call the U.S. Senate switchboard at ${A("tel:2022243121","202-224-3121")} and ask for your senator's office.`,
+  step2_title:"Stay in the loop", step2_sub:"Add your details so your emails sign themselves — and we'll tell you when the vote moves.",
+  namePh:"Your name", emailPh:"Email", phonePh:"Phone (optional)", optinLabel:"Keep me updated on the Save Our Bacon Act and how to help.",
+  submitBtn:"Count me in", successTitle:"You're in. Thank you.", successBody:"Your name will now auto-sign the senator emails above.",
+  step3_title:"Learn more", step3_sub:"The short version is above. The detail is here.",
+  step4_title:"Share", step4_sub:"Every call counts. The fastest way to stop this is more people making them.",
+  shareNativeLabel:"Share this page", shareText:"Stop the Save Our Bacon Act — it would force pregnant pigs back into cages and nullify animal-welfare laws voters passed. Call your senators, it takes 2 minutes:",
+  footerMain:`No login. No tracking. Senator names, parties, and official DC phone numbers come from the public ${A("https://github.com/unitedstates/congress-legislators","congress-legislators")} dataset; photos from the unitedstates project.`,
+  footerSrc:"Sources: ASPCA · The New Lede · Humane World for Animals · Harvard Law School Animal Law & Policy Program · Animal Equality · Our Hen House.",
+  createdBy:"Created by Joy Bardess", scrollCue:"Scroll",
+  party:{Democrat:"Democrat",Republican:"Republican",Independent:"Independent"},
+  acc:[
+   {q:"What is the Save Our Bacon Act?", a:`<p>The Save Our Bacon Act (${A(LK.hr,"H.R. 4673")}, sponsored by Rep. Ashley Hinson) is a provision in the 2026 Farm Bill that would nullify voter-approved state bans on cruel farming practices — including gestation crates for pigs, battery cages for egg-laying hens, and veal crates for calves.</p><p>It specifically targets California's ${A(LK.p12,"Prop 12")} and Massachusetts's ${A(LK.q3,"Question 3")}, both passed directly by voters. It's a rebranded version of the earlier ${A(LK.eats,"EATS Act")}. The House passed it largely on party lines in April 2026, and it now moves to the Senate.</p>`},
+   {q:"Why it matters", a:`<ul><li><strong>It overrides the will of voters.</strong> ${A(LK.p12,"Prop 12")} and ${A(LK.q3,"Question 3")} were passed directly by voters; Congress overturning them is Washington nullifying state ballot measures.</li><li><strong>It's a states' rights issue.</strong> Rep. Anna Paulina Luna offered an amendment to strike the provision, citing both animal welfare and states' rights — opposition is genuinely bipartisan.</li><li><strong>It endangers public health and food safety.</strong> A ${A(LK.harvard,"Harvard Law School")} analysis found it would threaten hundreds of state and local laws meant to stop the spread of farmed-animal diseases and protect public health, farmers, and consumers.</li><li><strong>It hurts higher-welfare farmers.</strong> Fifteen states have baseline welfare standards that let producers innovate and sell higher-welfare products; this law strips that market advantage.</li><li><strong>The opposition is broad.</strong> More than 6,600 groups and individuals oppose it — farmers, veterinarians, elected officials, and national organizations.</li><li><strong>The cruelty is concrete.</strong> Pregnant pigs would be forced back into cages so small they cannot turn around or take more than a step forward or backward.</li></ul>`},
+   {q:"What exactly am I asking for?", a:`<p>The single most effective ask: tell your senators — <strong>regardless of party</strong> — that the Save Our Bacon Act language must be <strong>removed from the Farm Bill</strong>. If the bill reaches the floor with this language, it needs only 60 votes to pass, so every senator matters.</p><p>You can also call the U.S. Senate switchboard at ${A("tel:2022243121","202-224-3121")}, ask for your senator's office, and say the same thing.</p>`}
+  ]
+ },
+ es:{
+  subtitle:"frenando la Ley Save Our Bacon",
+  step1_title:"Llama o escribe a tus senadores", step1_sub:"Toma dos minutos. Encontramos a tus senadores automáticamente.",
+  locating:"Buscando a tus senadores por ubicación…", zipPh:"Escribe tu código postal (ZIP)", findBtn:"Buscar", zipInstead:"Ingresar código postal",
+  locOff:"Ubicación desactivada — no hay problema. Escribe tu código postal:", enterZip:"Escribe tu código postal para encontrar a tus senadores:", cantRead:"No pudimos leer tu ubicación. Escribe tu código postal:",
+  loadingSens:"Cargando a tus senadores…", loadErr:"No se pudieron cargar los datos — revisa tu conexión y recarga.", noMatch:"No pudimos identificar tu ubicación. Prueba con tu código postal:",
+  invalidZip:"Escribe un código postal válido de 5 dígitos.", zipFail:"Ese código no funcionó. Verifícalo e intenta de nuevo.",
+  stateLine:"Tus senadores por {state} — llama a ambos para mayor impacto.", senatorOf:"Senador(a) de EE. UU. · {state}", phoneNA:"teléfono no disponible",
+  callBtn:"Llamar", emailBtn:"Correo", saveBtn:"Guardar",
+  callHeading:"Qué decir (en inglés) — unos 30 segundos", emailHeading:"Enviar un correo",
+  emailNote:"Redactado en inglés para que la oficina pueda leerlo. Edita lo que quieras y envíalo.", emailSend:"Abrir en la app de correo", emailCopy:"Copiar texto", copied:"¡Copiado!",
+  switchboard:`¿Sin respuesta? Llama a la centralita del Senado al ${A("tel:2022243121","202-224-3121")} y pide la oficina de tu senador.`,
+  step2_title:"Mantente al tanto", step2_sub:"Agrega tus datos para que tus correos se firmen solos — y te avisaremos cuando avance la votación.",
+  namePh:"Tu nombre", emailPh:"Correo", phonePh:"Teléfono (opcional)", optinLabel:"Mantenme informado(a) sobre la Ley Save Our Bacon y cómo ayudar.",
+  submitBtn:"Cuenten conmigo", successTitle:"Listo. Gracias.", successBody:"Tu nombre ahora firmará automáticamente los correos a los senadores.",
+  step3_title:"Más información", step3_sub:"La versión corta está arriba. El detalle, aquí.",
+  step4_title:"Comparte", step4_sub:"Cada llamada cuenta. La forma más rápida de detener esto es que más gente llame.",
+  shareNativeLabel:"Comparte esta página", shareText:"Detén la Ley Save Our Bacon: obligaría a las cerdas preñadas a volver a jaulas y anularía leyes de bienestar animal aprobadas por votantes. Llama a tus senadores, toma 2 minutos:",
+  footerMain:`Sin inicio de sesión. Sin rastreo. Los nombres, partidos y teléfonos oficiales provienen del conjunto de datos público ${A("https://github.com/unitedstates/congress-legislators","congress-legislators")}; las fotos, del proyecto unitedstates.`,
+  footerSrc:"Fuentes: ASPCA · The New Lede · Humane World for Animals · Harvard Law School Animal Law & Policy Program · Animal Equality · Our Hen House.",
+  createdBy:"Creado por Joy Bardess", scrollCue:"Desliza",
+  party:{Democrat:"Demócrata",Republican:"Republicano",Independent:"Independiente"},
+  acc:[
+   {q:"¿Qué es la Ley Save Our Bacon?", a:`<p>La Ley Save Our Bacon (${A(LK.hr,"H.R. 4673")}, presentada por la representante Ashley Hinson) es una disposición de la Ley Agrícola (Farm Bill) de 2026 que anularía las prohibiciones estatales —aprobadas por votantes— contra prácticas ganaderas crueles, incluidas las jaulas de gestación para cerdas, las jaulas en batería para gallinas ponedoras y las jaulas para terneros.</p><p>Apunta específicamente contra la ${A(LK.p12,"Proposición 12")} de California y la ${A(LK.q3,"Pregunta 3")} de Massachusetts, ambas aprobadas directamente por los votantes. Es una versión rebautizada de la anterior ${A(LK.eats,"Ley EATS")}. La Cámara la aprobó en gran medida por líneas partidistas en abril de 2026, y ahora pasa al Senado.</p>`},
+   {q:"¿Por qué importa?", a:`<ul><li><strong>Ignora la voluntad de los votantes.</strong> La ${A(LK.p12,"Prop 12")} y la ${A(LK.q3,"Pregunta 3")} fueron aprobadas directamente por los votantes; que el Congreso las revoque es Washington anulando decisiones tomadas en las urnas.</li><li><strong>Es un tema de derechos de los estados.</strong> La representante Anna Paulina Luna presentó una enmienda para eliminar la disposición, citando bienestar animal y derechos de los estados; la oposición es genuinamente bipartidista.</li><li><strong>Pone en riesgo la salud pública y la seguridad alimentaria.</strong> Un análisis de la ${A(LK.harvard,"Facultad de Derecho de Harvard")} concluyó que amenazaría cientos de leyes estatales y locales para frenar enfermedades de animales de granja y proteger la salud pública, a los agricultores y a los consumidores.</li><li><strong>Perjudica a los granjeros de mayor bienestar.</strong> Quince estados tienen estándares básicos de bienestar que permiten innovar y vender productos de mayor bienestar; esta ley elimina esa ventaja.</li><li><strong>La oposición es amplia.</strong> Más de 6,600 grupos e individuos se oponen: agricultores, veterinarios, autoridades electas y organizaciones nacionales.</li><li><strong>La crueldad es concreta.</strong> Las cerdas preñadas volverían a jaulas tan pequeñas que no pueden girar ni dar más de un paso.</li></ul>`},
+   {q:"¿Qué estoy pidiendo exactamente?", a:`<p>La petición más eficaz: dile a tus senadores —<strong>sin importar el partido</strong>— que el lenguaje de la Ley Save Our Bacon debe <strong>eliminarse de la Ley Agrícola</strong>. Si el proyecto llega al pleno con ese lenguaje, solo necesita 60 votos para aprobarse, así que cada senador cuenta.</p><p>También puedes llamar a la centralita del Senado al ${A("tel:2022243121","202-224-3121")}, pedir la oficina de tu senador y decir lo mismo.</p>`}
+  ]
+ },
+ zh:{
+  subtitle:"阻止《Save Our Bacon Act》法案",
+  step1_title:"致电或写信给您的参议员", step1_sub:"只需两分钟。我们会自动找到您的参议员。",
+  locating:"正在根据您的位置查找参议员……", zipPh:"输入您的邮政编码 (ZIP)", findBtn:"查找", zipInstead:"改为输入邮政编码",
+  locOff:"未开启定位 — 没关系。请输入您的邮政编码：", enterZip:"请输入邮政编码以查找您的参议员：", cantRead:"无法获取您的位置。请输入您的邮政编码：",
+  loadingSens:"正在加载您的参议员……", loadErr:"无法加载参议员数据 — 请检查网络后重新加载。", noMatch:"无法匹配您的位置。请尝试输入邮政编码：",
+  invalidZip:"请输入有效的 5 位邮政编码。", zipFail:"该邮政编码无效。请检查后重试。",
+  stateLine:"您在{state}的参议员 — 两位都致电，效果最佳。", senatorOf:"美国参议员 · {state}", phoneNA:"电话不可用",
+  callBtn:"致电", emailBtn:"邮件", saveBtn:"保存",
+  callHeading:"通话内容（用英语）— 约 30 秒", emailHeading:"发送邮件",
+  emailNote:"已用英文写好，方便办公室阅读。可随意修改后发送。", emailSend:"在邮件应用中打开", emailCopy:"复制文本", copied:"已复制！",
+  switchboard:`无人接听？拨打美国参议院总机 ${A("tel:2022243121","202-224-3121")}，要求转接您的参议员办公室。`,
+  step2_title:"保持关注", step2_sub:"留下您的信息，邮件将自动署名 — 投票一有进展我们会通知您。",
+  namePh:"您的姓名", emailPh:"电子邮箱", phonePh:"电话（可选）", optinLabel:"请向我更新《Save Our Bacon Act》的进展以及如何提供帮助。",
+  submitBtn:"算我一个", successTitle:"已加入，谢谢您。", successBody:"您的姓名现在会自动为上面的参议员邮件署名。",
+  step3_title:"了解更多", step3_sub:"上面是简要版，详细内容在这里。",
+  step4_title:"分享", step4_sub:"每一通电话都重要。阻止它最快的方法，就是让更多人一起打电话。",
+  shareNativeLabel:"分享此页面", shareText:"阻止《Save Our Bacon Act》——它会把怀孕母猪重新关进笼子，并废除选民通过的动物福利法律。给您的参议员打电话，只需 2 分钟：",
+  footerMain:`无需登录。不做追踪。参议员姓名、党派及华盛顿办公室官方电话来自公开数据集 ${A("https://github.com/unitedstates/congress-legislators","congress-legislators")}；照片来自 unitedstates 项目。`,
+  footerSrc:"资料来源：ASPCA · The New Lede · Humane World for Animals · 哈佛法学院动物法律与政策项目 · Animal Equality · Our Hen House。",
+  createdBy:"由 Joy Bardess 制作", scrollCue:"向下滑动",
+  party:{Democrat:"民主党",Republican:"共和党",Independent:"无党派"},
+  acc:[
+   {q:"什么是《Save Our Bacon Act》？", a:`<p>《Save Our Bacon Act》（${A(LK.hr,"H.R. 4673")}，由众议员 Ashley Hinson 提出）是 2026 年《农业法案》中的一项条款，将废除由选民批准、禁止残忍养殖方式的州级法律——包括给母猪用的妊娠定位栏、给蛋鸡用的层叠笼，以及给小牛用的犊牛栏。</p><p>它专门针对加州的 ${A(LK.p12,"第12号提案（Prop 12）")} 和马萨诸塞州的 ${A(LK.q3,"第3号公投（Question 3）")}，两者均由选民直接通过。它是早前 ${A(LK.eats,"《EATS 法案》")} 的改名版本。众议院已于 2026 年 4 月基本按党派立场通过，现已移交参议院。</p>`},
+   {q:"为什么这很重要", a:`<ul><li><strong>它无视选民的意愿。</strong> ${A(LK.p12,"Prop 12")} 和 ${A(LK.q3,"Question 3")} 由选民直接通过；国会推翻它们，等于华盛顿否决各州公投结果。</li><li><strong>这是州权问题。</strong> 众议员 Anna Paulina Luna 提出修正案要求删除该条款，理由兼及动物福利与州权——反对是真正跨党派的。</li><li><strong>它危及公共卫生与食品安全。</strong> ${A(LK.harvard,"哈佛法学院")} 的分析发现，它将威胁数百项旨在防止养殖动物疫病传播、保护公众健康、农民与消费者的州级和地方法律。</li><li><strong>它损害高福利养殖者。</strong> 有十五个州设有基本福利标准，让生产者得以创新并销售更高福利的产品；该法案会剥夺这一优势。</li><li><strong>反对声音广泛。</strong> 超过 6,600 个团体和个人表示反对——包括农民、兽医、民选官员和全国性组织。</li><li><strong>残忍是实实在在的。</strong> 怀孕母猪将被重新关进狭小的笼子，连转身或前后多走一步都做不到。</li></ul>`},
+   {q:"我具体在呼吁什么？", a:`<p>最有效的诉求：告诉您的参议员——<strong>无论党派</strong>——必须把《Save Our Bacon Act》的条款<strong>从《农业法案》中删除</strong>。如果该法案带着这些条款进入表决，只需 60 票即可通过，因此每一位参议员都至关重要。</p><p>您也可以拨打参议院总机 ${A("tel:2022243121","202-224-3121")}，要求转接您的参议员办公室，表达同样的诉求。</p>`}
+  ]
+ }
+};
+function t(key,params){ let v=(I18N[currentLang]&&I18N[currentLang][key]); if(v==null) v=I18N.en[key]; if(typeof v==="string"&&params) for(const k in params) v=v.replace("{"+k+"}",params[k]); return v; }
+
+/* ============== helpers ============== */
+const $=s=>document.querySelector(s);
+const STATE_NAMES={AL:"Alabama",AK:"Alaska",AZ:"Arizona",AR:"Arkansas",CA:"California",CO:"Colorado",CT:"Connecticut",DE:"Delaware",FL:"Florida",GA:"Georgia",HI:"Hawaii",ID:"Idaho",IL:"Illinois",IN:"Indiana",IA:"Iowa",KS:"Kansas",KY:"Kentucky",LA:"Louisiana",ME:"Maine",MD:"Maryland",MA:"Massachusetts",MI:"Michigan",MN:"Minnesota",MS:"Mississippi",MO:"Missouri",MT:"Montana",NE:"Nebraska",NV:"Nevada",NH:"New Hampshire",NJ:"New Jersey",NM:"New Mexico",NY:"New York",NC:"North Carolina",ND:"North Dakota",OH:"Ohio",OK:"Oklahoma",OR:"Oregon",PA:"Pennsylvania",RI:"Rhode Island",SC:"South Carolina",SD:"South Dakota",TN:"Tennessee",TX:"Texas",UT:"Utah",VT:"Vermont",VA:"Virginia",WA:"Washington",WV:"West Virginia",WI:"Wisconsin",WY:"Wyoming"};
+const NAME_TO_ABBR=Object.fromEntries(Object.entries(STATE_NAMES).map(([a,n])=>[n.toLowerCase(),a]));
+const escapeHtml=s=>(s||"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+function setStatus(key,params,spin){ curStatus={key,params:params||{},spin:!!spin}; applyStatus(); }
+function applyStatus(){ $("#statusText").textContent=t(curStatus.key,curStatus.params); $("#spin").style.display=curStatus.spin?"block":"none"; }
+function showZip(key){ $("#zipRow").classList.remove("is-hidden"); $("#manualLink").classList.add("is-hidden"); setStatus(key||"enterZip",{},false); $("#zip").focus(); }
+
+/* ============== data ============== */
+async function loadSenators(){
+  if(senatorsByState) return senatorsByState;
+  try{const raw=localStorage.getItem(CACHE_KEY); if(raw){const {t:ts,data}=JSON.parse(raw); if(Date.now()-ts<CACHE_TTL){senatorsByState=data;return data;}}}catch(e){}
+  const res=await fetch(DATA_URL); if(!res.ok) throw new Error("data");
+  const all=await res.json(); const byState={};
+  for(const p of all){const term=p.terms[p.terms.length-1]; if(term.type!=="sen")continue;
+    (byState[term.state]=byState[term.state]||[]).push({full:p.name.official_full||`${p.name.first} ${p.name.last}`,first:p.name.first,last:p.name.last,party:term.party||"",phone:term.phone||"",bioguide:p.id.bioguide,state:term.state});}
+  for(const st in byState) byState[st].sort((a,b)=>a.last.localeCompare(b.last));
+  senatorsByState=byState; try{localStorage.setItem(CACHE_KEY,JSON.stringify({t:Date.now(),data:byState}));}catch(e){}
+  return byState;
+}
+
+/* ============== location ============== */
+function censusStateFromCoords(lat,lon){
+  return new Promise((resolve,reject)=>{
+    const cb="__sop_census_cb"; const s=document.createElement("script"); let done=false;
+    const cleanup=()=>{try{delete window[cb];}catch(e){window[cb]=undefined;} s.remove(); clearTimeout(timer);};
+    const timer=setTimeout(()=>{if(!done){done=true;cleanup();reject("timeout");}},9000);
+    window[cb]=data=>{if(done)return;done=true;try{const geos=data.result.geographies;let arr=null;for(const k in geos){if(/state/i.test(k)){arr=geos[k];break;}}const st=arr&&arr[0];const abbr=st&&(st.STUSAB||NAME_TO_ABBR[(st.BASENAME||st.NAME||"").toLowerCase()]);cleanup();abbr?resolve(abbr):reject("no-state");}catch(e){cleanup();reject("parse");}};
+    s.onerror=()=>{if(!done){done=true;cleanup();reject("err");}};
+    s.src=`https://geocoding.geo.census.gov/geocoder/geographies/coordinates?x=${lon}&y=${lat}&benchmark=Public_AR_Current&vintage=Current_Current&layers=States&format=jsonp&callback=${cb}`;
+    document.body.appendChild(s);
+  });
+}
+function geoState(){return new Promise((resolve,reject)=>{if(!navigator.geolocation)return reject("no-geo");navigator.geolocation.getCurrentPosition(pos=>censusStateFromCoords(pos.coords.latitude,pos.coords.longitude).then(resolve,reject),()=>reject("denied"),{timeout:8000,maximumAge:600000});});}
+async function zipState(zip){const r=await fetch(`https://api.zippopotam.us/us/${zip}`);if(!r.ok)throw new Error("bad-zip");const d=await r.json();return d.places[0]["state abbreviation"];}
+
+/* ============== render senators ============== */
+async function showForState(state){
+  setStatus("loadingSens",{},true);
+  let data; try{data=await loadSenators();}catch(e){setStatus("loadErr",{},false);return;}
+  if(!data[state]||!data[state].length){showZip("noMatch");return;}
+  currentStateAbbr=state; currentList=data[state]; renderSenators();
+}
+function renderSenators(){
+  if(!currentStateAbbr) return;
+  const stName=STATE_NAMES[currentStateAbbr]||currentStateAbbr;
+  $("#locate").classList.add("is-hidden");
+  const root=$("#senators");
+  root.innerHTML=`<p class="state-line">${t("stateLine",{state:`<strong>${escapeHtml(stName)}</strong>`})}</p>`;
+  currentList.forEach((sen,i)=>root.insertAdjacentHTML("beforeend",senatorCard(sen,i)));
+  root.insertAdjacentHTML("beforeend",`<p class="switchboard">${t("switchboard")}</p>`);
+  currentList.forEach((sen,i)=>wireCard(sen,i));
+}
+function senatorCard(sen,i){
+  const tel=(sen.phone||"").replace(/[^0-9+]/g,"");
+  const partyTxt=(I18N[currentLang].party&&I18N[currentLang].party[sen.party])||sen.party||"";
+  return `
+  <div class="card sen" data-i="${i}">
+    <div class="sen-head">
+      <img class="photo" src="${PHOTO_BASE}${sen.bioguide}.jpg" alt="${escapeHtml(sen.full)}" onerror="photoFail(this)" />
+      <div class="sen-meta">
+        <div class="sen-tag">${t("senatorOf",{state:escapeHtml(STATE_NAMES[sen.state]||sen.state)})}</div>
+        <div class="sen-name">${escapeHtml(sen.full)}</div>
+        <div class="sen-tag">${escapeHtml(partyTxt)}</div>
+        <div class="sen-phone">${escapeHtml(sen.phone||t("phoneNA"))}</div>
+      </div>
+    </div>
+    <div class="actions">
+      <a class="btn btn-accent" href="tel:${tel}" data-act="call"><span aria-hidden="true">${icoPhone()}</span><span>${t("callBtn")}</span></a>
+      <button class="btn btn-ghost" data-act="email"><span aria-hidden="true">${icoMail()}</span><span>${t("emailBtn")}</span></button>
+      <button class="btn btn-ghost" data-act="save"><span aria-hidden="true">${icoSave()}</span><span>${t("saveBtn")}</span></button>
+    </div>
+    <div class="drawer" data-drawer="call">
+      <h4>${t("callHeading")}</h4>
+      <ul class="bullets">${CALL_BULLETS.map(b=>`<li>${escapeHtml(b)}</li>`).join("")}</ul>
+    </div>
+    <div class="drawer" data-drawer="email">
+      <h4>${t("emailHeading")}</h4>
+      <p class="drawer-note">${t("emailNote")}</p>
+      <textarea data-body>${escapeHtml(emailBody(sen,supporter.name))}</textarea>
+      <div class="drawer-actions">
+        <button class="btn btn-accent" data-send><span aria-hidden="true">${icoMail()}</span><span>${t("emailSend")}</span></button>
+        <button class="btn btn-ghost" data-copy><span aria-hidden="true">${icoCopy()}</span><span>${t("emailCopy")}</span></button>
+      </div>
+    </div>
+  </div>`;
+}
+function wireCard(sen,i){
+  const card=document.querySelector(`.sen[data-i="${i}"]`);
+  card.querySelector('[data-act="call"]').addEventListener("click",()=>card.querySelector('[data-drawer="call"]').classList.add("open"));
+  card.querySelector('[data-act="email"]').addEventListener("click",()=>card.querySelector('[data-drawer="email"]').classList.toggle("open"));
+  card.querySelector('[data-act="save"]').addEventListener("click",()=>downloadVCard(sen));
+  const bodyA=card.querySelector("[data-body]");
+  card.querySelector("[data-send]").addEventListener("click",()=>{window.location.href=`mailto:?subject=${encodeURIComponent(EMAIL_SUBJECT)}&body=${encodeURIComponent(bodyA.value)}`;});
+  card.querySelector("[data-copy]").addEventListener("click",async e=>{const lbl=e.currentTarget.querySelector("span:last-child");try{await navigator.clipboard.writeText(`${EMAIL_SUBJECT}\n\n${bodyA.value}`);lbl.textContent=t("copied");setTimeout(()=>lbl.textContent=t("emailCopy"),1500);}catch(err){}});
+}
+function refreshEmailBodies(){document.querySelectorAll(".sen").forEach(c=>{const i=+c.dataset.i,ta=c.querySelector("[data-body]");if(ta&&currentList[i])ta.value=emailBody(currentList[i],supporter.name);});}
+function downloadVCard(sen){
+  const vcard=`BEGIN:VCARD\nVERSION:3.0\nN:${sen.last};${sen.first};;Sen.;\nFN:Sen. ${sen.full}\nORG:U.S. Senate\nTITLE:U.S. Senator (${STATE_NAMES[sen.state]||sen.state})\nTEL;TYPE=WORK,VOICE:${sen.phone}\nNOTE:Call to ask: strip the Save Our Bacon Act from the Farm Bill.\nEND:VCARD`;
+  const blob=new Blob([vcard],{type:"text/vcard"});const url=URL.createObjectURL(blob);const a=document.createElement("a");a.href=url;a.download=`Sen_${sen.last}.vcf`;document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),2000);
+}
+
+/* ============== signup ============== */
+function wireSignup(){
+  const form=$("#signup");
+  try{const s=JSON.parse(localStorage.getItem("sop-supporter")||"null");if(s){supporter.name=s.name||"";supporter.email=s.email||"";supporter.phone=s.phone||"";$("#suName").value=supporter.name;$("#suEmail").value=s.email||"";$("#suPhone").value=s.phone||"";}}catch(e){}
+  $("#suName").addEventListener("input",e=>{supporter.name=e.target.value;refreshEmailBodies();});
+  form.addEventListener("submit",async e=>{
+    e.preventDefault();
+    supporter.name=$("#suName").value.trim();supporter.email=$("#suEmail").value.trim();supporter.phone=$("#suPhone").value.trim();
+    const optin=$("#suOptin").checked;
+    try{localStorage.setItem("sop-supporter",JSON.stringify(supporter));}catch(e){}
+    try{await fetch("/",{method:"POST",headers:{"Content-Type":"application/x-www-form-urlencoded"},body:new URLSearchParams({"form-name":SIGNUP_FORM,name:supporter.name,email:supporter.email,phone:supporter.phone,optin:optin?"yes":""}).toString()});}catch(err){}
+    refreshEmailBodies();
+    form.classList.add("is-hidden");$("#signupDone").classList.remove("is-hidden");
+  });
+}
+
+/* ============== accordion ============== */
+function renderAccordion(){
+  const items=I18N[currentLang].acc||I18N.en.acc;
+  $("#acc").innerHTML=items.map(it=>`<div class="card acc-item"><button class="acc-q"><span>${it.q}</span><span class="chev">▾</span></button><div class="acc-a">${it.a}</div></div>`).join("");
+  document.querySelectorAll("#acc .acc-q").forEach(q=>q.addEventListener("click",()=>q.closest(".acc-item").classList.toggle("open")));
+}
+
+/* ============== share ============== */
+function renderShare(){
+  const url=PROD_URL, txt=t("shareText");
+  const links=[
+    {label:"X",ico:icoX(),href:`https://twitter.com/intent/tweet?text=${encodeURIComponent(txt)}&url=${encodeURIComponent(url)}`},
+    {label:"Facebook",ico:icoFb(),href:`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}`},
+    {label:"WhatsApp",ico:icoWa(),href:`https://wa.me/?text=${encodeURIComponent(txt+" "+url)}`},
+    {label:"Email",ico:icoMail(),href:`mailto:?subject=${encodeURIComponent("Save Our Pigs")}&body=${encodeURIComponent(txt+"\n\n"+url)}`},
+  ];
+  $("#shareRow").innerHTML=links.map(l=>`<a class="btn btn-ghost" target="_blank" rel="noopener" href="${l.href}"><span aria-hidden="true">${l.ico}</span><span>${l.label}</span></a>`).join("")
+    +`<button class="btn btn-ghost" id="copyLink"><span aria-hidden="true">${icoLink()}</span><span>${t("copied")==="Copied!"?"Copy link":(currentLang==="es"?"Copiar enlace":"复制链接")}</span></button>`;
+  $("#copyLink").addEventListener("click",async e=>{const lbl=e.currentTarget.querySelector("span:last-child");const orig=lbl.textContent;try{await navigator.clipboard.writeText(url);lbl.textContent=t("copied");setTimeout(()=>lbl.textContent=orig,1500);}catch(err){}});
+  const nb=$("#shareNative");
+  if(navigator.share){nb.classList.remove("is-hidden");nb.onclick=()=>navigator.share({title:"Save Our Pigs",text:txt,url}).catch(()=>{});}
+  else nb.classList.add("is-hidden");
+}
+
+/* ============== apply language ============== */
+function applyLang(lang){
+  currentLang=lang; try{localStorage.setItem("sop-lang",lang);}catch(e){}
+  document.documentElement.lang=lang==="zh"?"zh-Hans":lang;
+  document.querySelectorAll("[data-i18n]").forEach(el=>el.textContent=t(el.dataset.i18n));
+  document.querySelectorAll("[data-i18n-html]").forEach(el=>el.innerHTML=t(el.dataset.i18nHtml));
+  document.querySelectorAll("[data-i18n-ph]").forEach(el=>el.placeholder=t(el.dataset.i18nPh));
+  document.querySelectorAll(".langs button").forEach(b=>b.classList.toggle("on",b.dataset.lang===lang));
+  applyStatus(); renderAccordion(); renderShare();
+  if(currentStateAbbr) renderSenators();
+}
+
+/* ============== icons ============== */
+function photoFail(img){const d=document.createElement("div");d.className="photo photo-fallback";d.setAttribute("role","img");d.setAttribute("aria-label","Photo unavailable");d.innerHTML=`<svg width="40" height="40" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 12a5 5 0 1 0 0-10 5 5 0 0 0 0 10Zm0 2c-4.4 0-8 2.7-8 6v2h16v-2c0-3.3-3.6-6-8-6Z"/></svg>`;img.replaceWith(d);}
+function icoPhone(){return `<svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z"/></svg>`;}
+function icoSave(){return `<svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><line x1="19" y1="8" x2="19" y2="14"/><line x1="22" y1="11" x2="16" y2="11"/></svg>`;}
+function icoMail(){return `<svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-10 5L2 7"/></svg>`;}
+function icoCopy(){return `<svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>`;}
+function icoLink(){return `<svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>`;}
+function icoX(){return `<svg class="ico" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M18.244 2H21l-6.49 7.41L22 22h-6.59l-4.62-6.04L5.5 22H3l6.94-7.93L2 2h6.59l4.18 5.52L18.244 2Zm-1.16 18h1.83L7.01 3.9H5.06L17.084 20Z"/></svg>`;}
+function icoFb(){return `<svg class="ico" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M22 12a10 10 0 1 0-11.56 9.88v-6.99H7.9V12h2.54V9.8c0-2.5 1.49-3.89 3.78-3.89 1.09 0 2.24.2 2.24.2v2.46h-1.26c-1.24 0-1.63.77-1.63 1.56V12h2.78l-.44 2.89h-2.34v6.99A10 10 0 0 0 22 12Z"/></svg>`;}
+function icoWa(){return `<svg class="ico" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12.04 2a9.9 9.9 0 0 0-8.5 14.96L2 22l5.2-1.36A9.9 9.9 0 1 0 12.04 2Zm5.8 14.06c-.24.68-1.4 1.3-1.93 1.34-.5.05-.97.23-3.28-.7-2.77-1.1-4.5-3.96-4.64-4.14-.13-.18-1.1-1.46-1.1-2.8 0-1.32.7-1.97.94-2.24.25-.27.54-.34.72-.34.18 0 .36 0 .52.01.17.01.4-.06.62.48.24.57.8 1.97.87 2.11.07.14.12.3.02.48-.1.18-.15.3-.3.46-.14.18-.3.4-.43.53-.14.14-.29.3-.12.58.16.27.73 1.2 1.56 1.94 1.07.95 1.97 1.25 2.25 1.39.27.14.43.12.6-.07.16-.18.68-.79.86-1.06.18-.27.36-.22.6-.13.25.09 1.6.76 1.87.9.27.13.45.2.52.31.07.12.07.66-.17 1.34Z"/></svg>`;}
+
+/* ============== deck nav (dots + cue) ============== */
+function wireDeck(){
+  const slides=[...document.querySelectorAll(".slide")];
+  const dots=$("#dots");
+  dots.innerHTML=slides.map((s,i)=>`<button data-go="${i}" aria-label="Step ${i+1}"></button>`).join("");
+  const dotBtns=[...dots.querySelectorAll("button")];
+  dotBtns.forEach((b,i)=>b.addEventListener("click",()=>slides[i].scrollIntoView({behavior:"smooth"})));
+  const cue=$("#cue"), deck=$("#deck");
+  const setActive=i=>dotBtns.forEach((b,j)=>b.classList.toggle("on",j===i));
+  const io=new IntersectionObserver(es=>{es.forEach(e=>{if(e.isIntersecting)setActive(slides.indexOf(e.target));});},{root:deck,threshold:.55});
+  slides.forEach(s=>io.observe(s));
+  // cue is an initial hint: visible only at the very top, gone once scrolling starts
+  const updateCue=()=>cue.classList.toggle("hide",deck.scrollTop>110);
+  deck.addEventListener("scroll",updateCue,{passive:true});
+  cue.addEventListener("click",()=>slides[1].scrollIntoView({behavior:"smooth"}));
+  setActive(0); updateCue();
+}
+
+/* ============== boot ============== */
+async function init(){
+  // language
+  let lang="en"; try{lang=localStorage.getItem("sop-lang")||(navigator.language||"").slice(0,2);}catch(e){}
+  if(!I18N[lang]) lang="en";
+  document.querySelectorAll(".langs button").forEach(b=>b.addEventListener("click",()=>applyLang(b.dataset.lang)));
+  wireSignup(); wireDeck();
+  applyLang(lang);
+
+  $("#zipBtn").addEventListener("click",onZip);
+  $("#zip").addEventListener("keydown",e=>{if(e.key==="Enter")onZip();});
+  $("#manualLink").addEventListener("click",()=>showZip("enterZip"));
+  $("#manualLink").classList.remove("is-hidden");
+
+  loadSenators().catch(()=>{});
+  setStatus("locating",{},true);
+  try{ await showForState(await geoState()); }
+  catch(reason){ showZip(reason==="denied"?"locOff":(reason==="no-geo"?"enterZip":"cantRead")); }
+}
+async function onZip(){
+  const zip=($("#zip").value||"").trim();
+  if(!/^\d{5}$/.test(zip)){setStatus("invalidZip",{},false);return;}
+  setStatus("loadingSens",{},true);
+  try{ await showForState(await zipState(zip)); }catch(e){ setStatus("zipFail",{},false); }
+}
+init();
+</script>
+</body>
+</html>
