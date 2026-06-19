@@ -6,6 +6,10 @@
 <title>Save Our Pigs — Stop the Save Our Bacon Act</title>
 <meta name="description" content="Call or email your two U.S. senators in two minutes and ask them to strip the Save Our Bacon Act from the Farm Bill." />
 <link rel="canonical" href="https://saveourpigs.com/" />
+<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png" />
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16.png" />
+<link rel="apple-touch-icon" href="/apple-touch-icon.png" />
 <meta property="og:title" content="Save Our Pigs" />
 <meta property="og:description" content="Call your senators in 2 minutes — stop the Save Our Bacon Act." />
 <meta property="og:url" content="https://saveourpigs.com/" />
@@ -135,6 +139,16 @@
   .acc-a ul{margin:0;padding-left:20px} .acc-a li{margin:9px 0} .acc-a strong{color:var(--ink)}
   .acc-a p{margin:0 0 10px}
 
+  /* ===== voices (social proof) ===== */
+  .voices-h{font-family:"Fraunces",serif;font-size:clamp(22px,5vw,30px);font-weight:600;letter-spacing:-.01em;margin:0 0 6px}
+  .voices{display:grid;gap:14px;margin-bottom:14px}
+  .voice-card{display:block;background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:18px 20px;text-decoration:none;color:var(--ink);box-shadow:0 1px 0 rgba(0,0,0,.02),0 14px 30px -22px rgba(120,60,40,.4)}
+  .voice-card:hover{background:var(--bg)}
+  .voice-name{font-weight:600}
+  .voice-handle{color:var(--muted);font-weight:400}
+  .voice-cta{margin-top:6px;color:var(--accent-deep);font-size:14px;font-weight:600}
+  .twitter-tweet{margin:0 auto !important}
+
   /* ===== share ===== */
   .share-row{display:flex;flex-wrap:wrap;gap:10px;margin-top:10px}
   .share-row .btn{flex:1;min-width:130px}
@@ -247,6 +261,16 @@
     </div>
   </section>
 
+  <!-- ===== SLIDE: voices (social proof) ===== -->
+  <section class="slide" id="slideVoices">
+    <div class="slide-inner">
+      <h2 class="voices-h" data-i18n="voicesTitle">People are fighting this</h2>
+      <p class="step-sub" data-i18n="voicesSub">You're not alone.</p>
+      <div class="voices" id="voices"></div>
+      <button class="btn btn-ghost btn-block" id="loadPosts" data-i18n="loadPosts">Load posts from X</button>
+    </div>
+  </section>
+
   <!-- ===== SLIDE 4: share ===== -->
   <section class="slide" id="slide4">
     <div class="slide-inner">
@@ -259,7 +283,7 @@
         <span data-i18n-html="footerMain"></span>
         <div class="src" data-i18n="footerSrc"></div>
       </footer>
-      <p class="credit"><span data-i18n-html="createdBy">Created by Joy Bardess</span> <span class="heart">🐖</span></p>
+      <p class="credit"><span data-i18n-html="createdBy">Created by Joy Bardess</span></p>
     </div>
   </section>
 
@@ -273,6 +297,11 @@ const CACHE_KEY  = "sop-sen-v1";
 const CACHE_TTL  = 7*24*60*60*1000;
 const PROD_URL   = "https://saveourpigs.com/";
 const SIGNUP_FORM = "supporters";   // Netlify form name → dashboard ▸ Forms
+const TWEETS=[
+  {name:"Lewis Bollard", handle:"@Lewis_Bollard", url:"https://twitter.com/Lewis_Bollard/status/2051344654063501671"},
+  {name:"Liv Boeree", handle:"@Liv_Boeree", url:"https://twitter.com/Liv_Boeree/status/2049612056224309561"}
+];
+let postsLoaded=false;
 
 let senatorsByState=null, currentList=[], currentStateAbbr=null, currentLang="en";
 const supporter={name:"",email:"",phone:""};
@@ -332,6 +361,7 @@ const I18N={
   footerSrc:"Sources: ASPCA · The New Lede · Humane World for Animals · Harvard Law School Animal Law & Policy Program · Animal Equality · Our Hen House.",
   createdBy:'Created by <a href="https://joybardess.com" target="_blank" rel="noopener">Joy Bardess</a>', scrollCue:"Scroll",
   actedTitle:"Thanks for taking action!", actedBody:"Now get one friend to call — it doubles your impact.", actedShare:"Share",
+  voicesTitle:"People are fighting this", voicesSub:"You're not alone — here's who's sounding the alarm.", loadPosts:"Load posts from X", voiceCta:"View post on X →",
   party:{Democrat:"Democrat",Republican:"Republican",Independent:"Independent"},
   acc:[
    {q:"What is the Save Our Bacon Act?", a:`<p>The Save Our Bacon Act (${A(LK.hr,"H.R. 4673")}, sponsored by Rep. Ashley Hinson) is a provision in the 2026 Farm Bill that would nullify voter-approved state bans on cruel farming practices — including gestation crates for pigs, battery cages for egg-laying hens, and veal crates for calves.</p><p>It specifically targets California's ${A(LK.p12,"Prop 12")} and Massachusetts's ${A(LK.q3,"Question 3")}, both passed directly by voters. It's a rebranded version of the earlier ${A(LK.eats,"EATS Act")}. The House passed it largely on party lines in April 2026, and it now moves to the Senate.</p>`},
@@ -361,6 +391,7 @@ const I18N={
   footerSrc:"Fuentes: ASPCA · The New Lede · Humane World for Animals · Harvard Law School Animal Law & Policy Program · Animal Equality · Our Hen House.",
   createdBy:'Creado por <a href="https://joybardess.com" target="_blank" rel="noopener">Joy Bardess</a>', scrollCue:"Desliza",
   actedTitle:"¡Gracias por actuar!", actedBody:"Ahora pide a una amistad que llame — duplica tu impacto.", actedShare:"Compartir",
+  voicesTitle:"Hay quienes están luchando", voicesSub:"No estás solo(a) — esto dicen quienes alzan la voz.", loadPosts:"Cargar publicaciones de X", voiceCta:"Ver publicación en X →",
   party:{Democrat:"Demócrata",Republican:"Republicano",Independent:"Independiente"},
   acc:[
    {q:"¿Qué es la Ley Save Our Bacon?", a:`<p>La Ley Save Our Bacon (${A(LK.hr,"H.R. 4673")}, presentada por la representante Ashley Hinson) es una disposición de la Ley Agrícola (Farm Bill) de 2026 que anularía las prohibiciones estatales —aprobadas por votantes— contra prácticas ganaderas crueles, incluidas las jaulas de gestación para cerdas, las jaulas en batería para gallinas ponedoras y las jaulas para terneros.</p><p>Apunta específicamente contra la ${A(LK.p12,"Proposición 12")} de California y la ${A(LK.q3,"Pregunta 3")} de Massachusetts, ambas aprobadas directamente por los votantes. Es una versión rebautizada de la anterior ${A(LK.eats,"Ley EATS")}. La Cámara la aprobó en gran medida por líneas partidistas en abril de 2026, y ahora pasa al Senado.</p>`},
@@ -390,6 +421,7 @@ const I18N={
   footerSrc:"资料来源：ASPCA · The New Lede · Humane World for Animals · 哈佛法学院动物法律与政策项目 · Animal Equality · Our Hen House。",
   createdBy:'由 <a href="https://joybardess.com" target="_blank" rel="noopener">Joy Bardess</a> 制作', scrollCue:"向下滑动",
   actedTitle:"感谢您的行动！", actedBody:"现在邀请一位朋友也打个电话——影响力翻倍。", actedShare:"分享",
+  voicesTitle:"许多人正在反对", voicesSub:"你并不孤单——听听这些发声的人。", loadPosts:"加载 X 上的帖子", voiceCta:"在 X 上查看 →",
   party:{Democrat:"民主党",Republican:"共和党",Independent:"无党派"},
   acc:[
    {q:"什么是《Save Our Bacon Act》？", a:`<p>《Save Our Bacon Act》（${A(LK.hr,"H.R. 4673")}，由众议员 Ashley Hinson 提出）是 2026 年《农业法案》中的一项条款，将废除由选民批准、禁止残忍养殖方式的州级法律——包括给母猪用的妊娠定位栏、给蛋鸡用的层叠笼，以及给小牛用的犊牛栏。</p><p>它专门针对加州的 ${A(LK.p12,"第12号提案（Prop 12）")} 和马萨诸塞州的 ${A(LK.q3,"第3号公投（Question 3）")}，两者均由选民直接通过。它是早前 ${A(LK.eats,"《EATS 法案》")} 的改名版本。众议院已于 2026 年 4 月基本按党派立场通过，现已移交参议院。</p>`},
@@ -556,6 +588,20 @@ function renderShare(){
   else nb.classList.add("is-hidden");
 }
 
+/* ============== voices (social proof, click-to-load) ============== */
+function renderVoices(){
+  if(postsLoaded) return;
+  $("#voices").innerHTML=TWEETS.map(tw=>`<a class="voice-card" href="${tw.url}" target="_blank" rel="noopener"><div class="voice-name">${tw.name} <span class="voice-handle">${tw.handle}</span></div><div class="voice-cta">${t("voiceCta")}</div></a>`).join("");
+}
+function loadPosts(){
+  postsLoaded=true;
+  const c=$("#voices");
+  c.innerHTML=TWEETS.map(tw=>`<blockquote class="twitter-tweet" data-dnt="true"><a href="${tw.url}"></a></blockquote>`).join("");
+  $("#loadPosts").style.display="none";
+  if(window.twttr&&window.twttr.widgets){ window.twttr.widgets.load(c); }
+  else { const s=document.createElement("script"); s.src="https://platform.twitter.com/widgets.js"; s.async=true; s.charset="utf-8"; document.body.appendChild(s); }
+}
+
 /* ============== apply language ============== */
 function applyLang(lang){
   currentLang=lang; try{localStorage.setItem("sop-lang",lang);}catch(e){}
@@ -564,7 +610,7 @@ function applyLang(lang){
   document.querySelectorAll("[data-i18n-html]").forEach(el=>el.innerHTML=t(el.dataset.i18nHtml));
   document.querySelectorAll("[data-i18n-ph]").forEach(el=>el.placeholder=t(el.dataset.i18nPh));
   document.querySelectorAll(".langs button").forEach(b=>b.classList.toggle("on",b.dataset.lang===lang));
-  applyStatus(); renderAccordion(); renderShare();
+  applyStatus(); renderAccordion(); renderShare(); renderVoices();
   if(currentStateAbbr) renderSenators();
 }
 
@@ -606,6 +652,7 @@ async function init(){
   wireSignup(); wireDeck();
   $("#toastShare").addEventListener("click",toastShareAction);
   $("#toastClose").addEventListener("click",hideToast);
+  $("#loadPosts").addEventListener("click",loadPosts);
   applyLang(lang);
 
   $("#zipBtn").addEventListener("click",onZip);
