@@ -1,0 +1,5 @@
+# Save Our Pigs is a static site — index.html lives at the repo root.
+# No build step; publish the root directory as-is.
+[build]
+  publish = "."
+  command = ""
