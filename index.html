@@ -148,6 +148,11 @@
   .voice-handle{color:var(--muted);font-weight:400}
   .voice-cta{margin-top:6px;color:var(--accent-deep);font-size:14px;font-weight:600}
   .twitter-tweet{margin:0 auto !important}
+  .roster{display:grid;gap:18px;margin-top:18px}
+  .roster-label{font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--accent-deep);font-weight:700;margin-bottom:9px}
+  .chips{display:flex;flex-wrap:wrap;gap:7px}
+  .chip{background:var(--card);border:1px solid var(--line);border-radius:999px;padding:6px 12px;font-size:13px;color:var(--ink)}
+  .roster-more{margin-top:16px;color:var(--muted);font-size:14px;font-style:italic}
 
   /* ===== share ===== */
   .share-row{display:flex;flex-wrap:wrap;gap:10px;margin-top:10px}
@@ -277,6 +282,8 @@
       <h2 class="voices-h" data-i18n="voicesTitle">People are fighting this</h2>
       <p class="step-sub" data-i18n="voicesSub">You're not alone.</p>
       <div class="voices" id="voices"></div>
+      <div class="roster" id="roster"></div>
+      <p class="roster-more" data-i18n="rosterMore">…and 6,600+ more.</p>
 
       <footer>
         <span data-i18n-html="footerMain"></span>
@@ -299,6 +306,12 @@ const SIGNUP_FORM = "supporters";   // Netlify form name → dashboard ▸ Forms
 const TWEETS=[
   {name:"Lewis Bollard", handle:"@Lewis_Bollard", url:"https://twitter.com/Lewis_Bollard/status/2051344654063501671"},
   {name:"Liv Boeree", handle:"@Liv_Boeree", url:"https://twitter.com/Liv_Boeree/status/2049612056224309561"}
+];
+const ROSTER=[
+  {key:"farmers", names:["Clemens Food Group","Niman Ranch","Iowa Select","JBS","American Meat Producer Association","Russ Kremer","Brad Clemens","Jonathan Buttram"]},
+  {key:"lawmakers", names:["Sen. Cory Booker (D-NJ)","Texas Ag. Comm. Sid Miller (R)","Rep. Jim McGovern (D-MA)","Rep. Jim Costa (D-CA)","Rep. Zoe Lofgren (D-CA)","Rep. Lateefah Simon (D-CA)","30 senators · 16 state AGs"]},
+  {key:"welfare", names:["ASPCA","Humane World for Animals","Animal Equality","Animal Legal Defense Fund","Animal Wellness Action","Center for a Humane Economy","Compassion in World Farming","Harvard Law (Stilt, McGill)"]},
+  {key:"states", names:["Moms for America","National Governors Association","Nat'l Conf. of State Legislatures"]}
 ];
 
 let senatorsByState=null, currentList=[], currentStateAbbr=null, currentLang="en";
@@ -359,7 +372,7 @@ const I18N={
   footerSrc:"Sources: ASPCA · The New Lede · Humane World for Animals · Harvard Law School Animal Law & Policy Program · Animal Equality · Our Hen House.",
   createdBy:'Created by <a href="https://joybardess.com" target="_blank" rel="noopener">Joy Bardess</a>', scrollCue:"Scroll",
   actedTitle:"Thanks for taking action!", actedBody:"Now get one friend to call — it doubles your impact.", actedShare:"Share",
-  voicesTitle:"People are fighting this", voicesSub:"You're not alone — here's who's sounding the alarm.", loadPosts:"Load posts from X", voiceCta:"View post on X →",
+  voicesTitle:"People are fighting this", voicesSub:"Not partisan, and not just animal advocates — farmers, Republicans, and Democrats all oppose it.", loadPosts:"Load posts from X", voiceCta:"View post on X →", roster_farmers:"Farmers & producers", roster_lawmakers:"Bipartisan lawmakers", roster_welfare:"Animal welfare & legal", roster_states:"States'-rights groups", rosterMore:"…and 6,600+ farms, groups, and individuals.",
   party:{Democrat:"Democrat",Republican:"Republican",Independent:"Independent"},
   acc:[
    {q:"What is the Save Our Bacon Act?", a:`<p>The Save Our Bacon Act (${A(LK.hr,"H.R. 4673")}, sponsored by Rep. Ashley Hinson) is a provision in the 2026 Farm Bill that would nullify voter-approved state bans on cruel farming practices — including gestation crates for pigs, battery cages for egg-laying hens, and veal crates for calves.</p><p>It specifically targets California's ${A(LK.p12,"Prop 12")} and Massachusetts's ${A(LK.q3,"Question 3")}, both passed directly by voters. It's a rebranded version of the earlier ${A(LK.eats,"EATS Act")}. The House passed it largely on party lines in April 2026, and it now moves to the Senate.</p>`},
@@ -389,7 +402,7 @@ const I18N={
   footerSrc:"Fuentes: ASPCA · The New Lede · Humane World for Animals · Harvard Law School Animal Law & Policy Program · Animal Equality · Our Hen House.",
   createdBy:'Creado por <a href="https://joybardess.com" target="_blank" rel="noopener">Joy Bardess</a>', scrollCue:"Desliza",
   actedTitle:"¡Gracias por actuar!", actedBody:"Ahora pide a una amistad que llame — duplica tu impacto.", actedShare:"Compartir",
-  voicesTitle:"Hay quienes están luchando", voicesSub:"No estás solo(a) — esto dicen quienes alzan la voz.", loadPosts:"Cargar publicaciones de X", voiceCta:"Ver publicación en X →",
+  voicesTitle:"Hay quienes están luchando", voicesSub:"No es partidista ni solo de defensores de animales: agricultores, republicanos y demócratas se oponen.", loadPosts:"Cargar publicaciones de X", voiceCta:"Ver publicación en X →", roster_farmers:"Agricultores y productores", roster_lawmakers:"Legisladores de ambos partidos", roster_welfare:"Bienestar animal y legal", roster_states:"Grupos por los derechos de los estados", rosterMore:"…y más de 6,600 granjas, organizaciones y personas.",
   party:{Democrat:"Demócrata",Republican:"Republicano",Independent:"Independiente"},
   acc:[
    {q:"¿Qué es la Ley Save Our Bacon?", a:`<p>La Ley Save Our Bacon (${A(LK.hr,"H.R. 4673")}, presentada por la representante Ashley Hinson) es una disposición de la Ley Agrícola (Farm Bill) de 2026 que anularía las prohibiciones estatales —aprobadas por votantes— contra prácticas ganaderas crueles, incluidas las jaulas de gestación para cerdas, las jaulas en batería para gallinas ponedoras y las jaulas para terneros.</p><p>Apunta específicamente contra la ${A(LK.p12,"Proposición 12")} de California y la ${A(LK.q3,"Pregunta 3")} de Massachusetts, ambas aprobadas directamente por los votantes. Es una versión rebautizada de la anterior ${A(LK.eats,"Ley EATS")}. La Cámara la aprobó en gran medida por líneas partidistas en abril de 2026, y ahora pasa al Senado.</p>`},
@@ -419,7 +432,7 @@ const I18N={
   footerSrc:"资料来源：ASPCA · The New Lede · Humane World for Animals · 哈佛法学院动物法律与政策项目 · Animal Equality · Our Hen House。",
   createdBy:'由 <a href="https://joybardess.com" target="_blank" rel="noopener">Joy Bardess</a> 制作', scrollCue:"向下滑动",
   actedTitle:"感谢您的行动！", actedBody:"现在邀请一位朋友也打个电话——影响力翻倍。", actedShare:"分享",
-  voicesTitle:"许多人正在反对", voicesSub:"你并不孤单——听听这些发声的人。", loadPosts:"加载 X 上的帖子", voiceCta:"在 X 上查看 →",
+  voicesTitle:"许多人正在反对", voicesSub:"这不是党派之争，也不只是动物保护者——农户、共和党人和民主党人都在反对。", loadPosts:"加载 X 上的帖子", voiceCta:"在 X 上查看 →", roster_farmers:"农户与生产者", roster_lawmakers:"两党议员", roster_welfare:"动物福利与法律界", roster_states:"州权团体", rosterMore:"……以及超过 6,600 家农场、组织和个人。",
   party:{Democrat:"民主党",Republican:"共和党",Independent:"无党派"},
   acc:[
    {q:"什么是《Save Our Bacon Act》？", a:`<p>《Save Our Bacon Act》（${A(LK.hr,"H.R. 4673")}，由众议员 Ashley Hinson 提出）是 2026 年《农业法案》中的一项条款，将废除由选民批准、禁止残忍养殖方式的州级法律——包括给母猪用的妊娠定位栏、给蛋鸡用的层叠笼，以及给小牛用的犊牛栏。</p><p>它专门针对加州的 ${A(LK.p12,"第12号提案（Prop 12）")} 和马萨诸塞州的 ${A(LK.q3,"第3号公投（Question 3）")}，两者均由选民直接通过。它是早前 ${A(LK.eats,"《EATS 法案》")} 的改名版本。众议院已于 2026 年 4 月基本按党派立场通过，现已移交参议院。</p>`},
@@ -600,6 +613,9 @@ function renderVoices(){
   s.onload=()=>{ if(window.twttr&&window.twttr.widgets) window.twttr.widgets.load(); };
   document.body.appendChild(s);
 }
+function renderRoster(){
+  $("#roster").innerHTML=ROSTER.map(g=>`<div class="roster-group"><div class="roster-label">${t("roster_"+g.key)}</div><div class="chips">${g.names.map(n=>`<span class="chip">${escapeHtml(n)}</span>`).join("")}</div></div>`).join("");
+}
 
 /* ============== apply language ============== */
 function applyLang(lang){
@@ -609,7 +625,7 @@ function applyLang(lang){
   document.querySelectorAll("[data-i18n-html]").forEach(el=>el.innerHTML=t(el.dataset.i18nHtml));
   document.querySelectorAll("[data-i18n-ph]").forEach(el=>el.placeholder=t(el.dataset.i18nPh));
   document.querySelectorAll(".langs button").forEach(b=>b.classList.toggle("on",b.dataset.lang===lang));
-  applyStatus(); renderAccordion(); renderShare(); renderVoices();
+  applyStatus(); renderAccordion(); renderShare(); renderVoices(); renderRoster();
   if(currentStateAbbr) renderSenators();
 }
 
