@@ -65,6 +65,21 @@
   h1{font-family:"Fraunces",Georgia,serif;font-weight:600;font-size:clamp(40px,11vw,60px);line-height:.98;letter-spacing:-.01em;margin:0;color:var(--accent-deep)}
   .squiggle{display:block;margin:2px auto 0;width:190px;max-width:62%;height:13px;color:var(--blush)}
   .subtitle{font-size:clamp(15px,2.4vw,18px);color:var(--muted);font-weight:500;margin:12px 0 0}
+  .phaseline{margin:14px auto 0;max-width:32ch;font-size:clamp(16px,2.7vw,19px);color:var(--ink);font-weight:600;line-height:1.35}
+  .banner{background:var(--accent);color:#fff;border-radius:14px;padding:13px 16px;margin-bottom:20px;font-weight:600;font-size:15px;line-height:1.4;text-align:center;box-shadow:0 8px 20px -10px rgba(198,74,51,.6)}
+  .agbadge{padding:11px 16px;font-size:12.5px;font-weight:600;background:var(--accent-soft);color:var(--accent-deep);line-height:1.35;border-bottom:1px solid var(--line)}
+  .agbadge-hot{background:var(--accent);color:#fff;border-bottom:none}
+  .tl-h{font-family:"Fraunces",serif;font-size:clamp(20px,4.5vw,26px);font-weight:600;margin:36px 0 2px}
+  .timeline{margin-top:16px}
+  .tl-item{display:flex;gap:14px;padding-bottom:18px;position:relative}
+  .tl-item:not(:last-child)::before{content:"";position:absolute;left:6px;top:16px;bottom:0;width:2px;background:var(--line)}
+  .tl-dot{width:14px;height:14px;border-radius:50%;background:var(--line);flex:none;margin-top:3px;z-index:1;border:2px solid var(--bg)}
+  .tl-done .tl-dot{background:var(--good)}
+  .tl-now .tl-dot{background:var(--accent);box-shadow:0 0 0 4px var(--accent-soft)}
+  .tl-t{font-weight:600;font-size:16px}
+  .tl-now-label{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--accent-deep);margin-left:8px}
+  .tl-d{color:var(--muted);font-size:14px;margin-top:2px;line-height:1.45}
+  .tl-future .tl-t{color:var(--muted)}
 
   /* ===== steps ===== */
   .step-head{display:flex;align-items:center;gap:12px;margin-bottom:6px}
@@ -206,6 +221,7 @@
   <!-- ===== SLIDE 1: hero + action ===== -->
   <section class="slide" id="slide1">
     <div class="slide-inner">
+      <div class="banner is-hidden" id="banner" role="alert"></div>
       <div class="hero">
         <svg class="piglogo" viewBox="0 0 64 64" aria-hidden="true">
           <path d="M14 16c-2-6 4-8 8-4l3 3" fill="#f3b6a8"/><path d="M50 16c2-6-4-8-8-4l-3 3" fill="#f3b6a8"/>
@@ -216,7 +232,8 @@
         </svg>
         <h1>Save Our Pigs</h1>
         <svg class="squiggle" viewBox="0 0 200 12" fill="none" aria-hidden="true"><path d="M2 7C26 1 38 11 62 7s36-9 60-4 38 7 76 1" stroke="currentColor" stroke-width="3.4" stroke-linecap="round"/></svg>
-        <p class="subtitle" data-i18n="subtitle">by stopping the Save Our Bacon Act</p>
+        <p class="subtitle" data-i18n="subtitle">by keeping the Save Our Bacon Act out of the Farm Bill</p>
+        <p class="phaseline" id="phaseline"></p>
       </div>
 
       <div class="step-head"><span class="stepnum">1</span><h2 data-i18n="step1_title">Call or email your senators</h2></div>
@@ -264,6 +281,8 @@
       <div class="step-head"><span class="stepnum">3</span><h2 data-i18n="step3_title">Learn more</h2></div>
       <p class="step-sub" data-i18n="step3_sub">The short version is above. The detail is here.</p>
       <div class="acc" id="acc"></div>
+      <h3 class="tl-h" data-i18n="tlTitle">What happens next</h3>
+      <div class="timeline" id="timeline"></div>
     </div>
   </section>
 
@@ -308,27 +327,47 @@ const TWEETS=[
 ];
 
 let senatorsByState=null, currentList=[], currentStateAbbr=null, currentLang="en";
-const supporter={name:"",email:"",phone:""};
+const supporter={name:"",email:"",phone:"",town:""};
 let curStatus={key:"locating",params:{},spin:true};
 
-/* ============== content sent to senators (kept in English) ============== */
-const CALL_BULLETS=[
-  "Hi, my name is [name] and I'm a constituent calling from [town].",
-  "I'm asking the Senator to oppose any version of the Farm Bill that includes the Save Our Bacon Act language.",
-  "It would overturn Prop 12 and other animal-welfare laws that voters passed directly at the ballot box.",
-  "This is a states' rights and food-safety issue — a Harvard report found it threatens hundreds of state disease and public-health laws.",
-  "Please ask the Senator to make sure that language is stripped from the Farm Bill. Thank you."
+/* ============== PHASE — flip this ONE value as the Senate calendar moves ==============
+   "pre_markup"  now → mid-July   : "It's out of the draft — help keep it out."
+   "markup"      mid-July → mid-Aug: red banner, amendment live in committee; Ag badge prominent.
+   "floor"       Aug → Sept        : full Senate vote, 60 votes to pass.                     */
+const PHASE = "pre_markup";
+
+/* Senators on the Senate Agriculture Committee (bioguide IDs) — call carries extra weight. */
+const AG_COMMITTEE = ["B001236","M000355","H001061","E000295","H001079","M001198","T000278","J000312","G000386","T000250","F000463","M000934","K000367","B001267","S001203","D000563","B001288","L000570","W000790","W000800","F000479","S001150","S001211"];
+const isAg = sen => AG_COMMITTEE.includes(sen.bioguide);
+
+/* ============== call scripts (English — spoken to the office), by phase ============== */
+const SCRIPT_KEEP=[ // pre_markup + markup
+  "Hi, my name is [name], I'm a constituent from [town].",
+  "I'm asking the Senator to oppose any amendment that would add the Save Our Bacon Act back into the Farm Bill.",
+  "It's not in the Senate draft, and it should stay out — in committee, on the floor, and in conference.",
+  "It would overturn Prop 12 and other laws voters passed directly, and strip states of the power to set their own food-safety rules.",
+  "Please help keep this language out of the final bill. Thank you."
 ];
-const EMAIL_SUBJECT="Please strip the Save Our Bacon Act from the Farm Bill";
-function emailBody(sen,name){
+const SCRIPT_FLOOR=[
+  "Hi, my name is [name], I'm a constituent from [town].",
+  "I'm asking the Senator to vote against any Farm Bill that includes the Save Our Bacon Act.",
+  "It overturns voter-approved animal-welfare laws and threatens state food-safety protections.",
+  "It only takes 60 votes to pass, so the Senator's vote matters. Please vote no on that language. Thank you."
+];
+const callBullets = () => PHASE==="floor" ? SCRIPT_FLOOR : SCRIPT_KEEP;
+
+/* ============== pre-filled email (English) ============== */
+const EMAIL_SUBJECT="Please keep the Save Our Bacon Act out of the Farm Bill";
+function emailBody(sen,name,town){
   const signer=(name&&name.trim())?name.trim():"[Your name]";
+  const place=(town&&town.trim())?town.trim():"[Town, State]";
   return `Dear Senator ${sen.last},\n\n`
-   +`As your constituent, I'm urging you to oppose any version of the Farm Bill that includes the Save Our Bacon Act (H.R. 4673). `
-   +`It would nullify Prop 12 and other animal-welfare laws that voters approved directly. `
-   +`A Harvard Law School analysis found it would also threaten hundreds of state laws protecting public health and food safety. `
+   +`As your constituent, I'm asking you to keep the Save Our Bacon Act (H.R. 4673) out of the final Farm Bill — through committee markup, any floor amendment, and conference with the House. `
+   +`It would nullify Prop 12 and other animal-welfare laws that voters approved directly, and strip states of the power to set their own food-safety and disease-prevention standards. `
+   +`A Harvard Law School analysis found it threatens hundreds of public-health protections. `
    +`This is as much a states' rights issue as an animal-welfare one. `
-   +`Please work to ensure this language is removed before the bill reaches the floor.\n\n`
-   +`Thank you,\n${signer}, [Town, State]`;
+   +`Thank you for defending the will of voters.\n\n`
+   +`${signer}, ${place}`;
 }
 
 /* ============== source links (shared across languages) ============== */
@@ -344,7 +383,20 @@ const A=(href,txt)=>`<a href="${href}" target="_blank" rel="noopener">${txt}</a>
 /* ============== i18n ============== */
 const I18N={
  en:{
-  subtitle:"by stopping the Save Our Bacon Act",
+  subtitle:"by keeping the Save Our Bacon Act out of the Farm Bill",
+  phaseHero_pre_markup:"Good news: it's out of the Senate draft. Now help keep it out.",
+  phaseHero_markup:"An amendment to add it back is live in committee right now. Call today.",
+  phaseHero_floor:"It's headed to the full Senate — every senator counts. It takes just 60 votes to pass.",
+  banner_pre_markup:"",
+  banner_markup:"⚠ The amendment to add it back is live in committee right now. Call today.",
+  banner_floor:"⚠ Now at the full Senate — it takes only 60 votes. Call your senators today.",
+  agBadge:"On the Senate Agriculture Committee — your call carries extra weight right now.",
+  yourName:"Your name", yourTown:"Your town",
+  tlTitle:"What happens next", tlNow:"you are here",
+  tl_draft_t:"Senate draft", tl_draft_d:"Done — the Save Our Bacon Act is NOT in the Senate's draft. ✓",
+  tl_markup_t:"Committee markup", tl_markup_d:"An amendment could add it back in the Agriculture Committee.",
+  tl_floor_t:"Senate floor vote", tl_floor_d:"The full Senate votes — it takes 60 votes to pass.",
+  tl_conf_t:"House–Senate conference", tl_conf_d:"The House and Senate bills are reconciled; this language has been stripped back out here before.",
   step1_title:"Call or email your senators", step1_sub:"It takes two minutes. We pull up your senators automatically.",
   locating:"Finding your senators by location…", zipPh:"Enter your ZIP code", findBtn:"Find", zipInstead:"Enter ZIP code instead",
   locOff:"Location off — no problem. Enter your ZIP code:", enterZip:"Enter your ZIP code to find your senators:", cantRead:"Couldn't read your location. Enter your ZIP code:",
@@ -374,7 +426,19 @@ const I18N={
   ]
  },
  es:{
-  subtitle:"frenando la Ley Save Our Bacon",
+  subtitle:"por mantener la Ley Save Our Bacon fuera de la Ley Agrícola",
+  phaseHero_pre_markup:"Buenas noticias: quedó fuera del borrador del Senado. Ahora ayúdanos a mantenerlo fuera.",
+  phaseHero_markup:"Una enmienda para volver a incluirlo está activa en el comité ahora mismo. Llama hoy.",
+  phaseHero_floor:"Va al pleno del Senado: cada senador cuenta. Solo se necesitan 60 votos.",
+  banner_markup:"⚠ Una enmienda para volver a incluirlo está activa en el comité ahora mismo. Llama hoy.",
+  banner_floor:"⚠ Ahora en el pleno del Senado: solo bastan 60 votos. Llama a tus senadores hoy.",
+  agBadge:"En el Comité de Agricultura del Senado: tu llamada tiene aún más peso ahora.",
+  yourName:"Tu nombre", yourTown:"Tu ciudad",
+  tlTitle:"Qué sigue", tlNow:"estás aquí",
+  tl_draft_t:"Borrador del Senado", tl_draft_d:"Hecho: la Ley Save Our Bacon NO está en el borrador del Senado. ✓",
+  tl_markup_t:"Markup en comité", tl_markup_d:"Una enmienda podría volver a incluirla en el Comité de Agricultura.",
+  tl_floor_t:"Voto en el pleno", tl_floor_d:"Vota todo el Senado: se necesitan 60 votos para aprobarla.",
+  tl_conf_t:"Conferencia Cámara–Senado", tl_conf_d:"Se concilian ambos proyectos; antes se ha eliminado este texto en esta etapa.",
   step1_title:"Llama o escribe a tus senadores", step1_sub:"Toma dos minutos. Encontramos a tus senadores automáticamente.",
   locating:"Buscando a tus senadores por ubicación…", zipPh:"Escribe tu código postal (ZIP)", findBtn:"Buscar", zipInstead:"Ingresar código postal",
   locOff:"Ubicación desactivada — no hay problema. Escribe tu código postal:", enterZip:"Escribe tu código postal para encontrar a tus senadores:", cantRead:"No pudimos leer tu ubicación. Escribe tu código postal:",
@@ -404,7 +468,19 @@ const I18N={
   ]
  },
  zh:{
-  subtitle:"阻止《Save Our Bacon Act》法案",
+  subtitle:"让《Save Our Bacon Act》留在《农业法案》之外",
+  phaseHero_pre_markup:"好消息：它已不在参议院草案中。现在请帮忙让它继续留在外面。",
+  phaseHero_markup:"把它加回去的修正案正在委员会审议中。今天就打电话。",
+  phaseHero_floor:"它即将提交参议院全院表决——每一位参议员都重要，只需60票即可通过。",
+  banner_markup:"⚠ 把它加回去的修正案正在委员会审议中。今天就打电话。",
+  banner_floor:"⚠ 现已进入参议院全院表决——只需60票。今天就给参议员打电话。",
+  agBadge:"属于参议院农业委员会——你的来电此刻分量尤其重。",
+  yourName:"您的姓名", yourTown:"您所在的城镇",
+  tlTitle:"接下来会发生什么", tlNow:"当前阶段",
+  tl_draft_t:"参议院草案", tl_draft_d:"已完成——《Save Our Bacon Act》不在参议院草案中。✓",
+  tl_markup_t:"委员会审议（markup）", tl_markup_d:"修正案可能在农业委员会把它加回去。",
+  tl_floor_t:"参议院全院表决", tl_floor_d:"全院投票——通过需要 60 票。",
+  tl_conf_t:"两院协商（conference）", tl_conf_d:"参众两院版本进行协调；以往曾在此阶段被删除。",
   step1_title:"致电或写信给您的参议员", step1_sub:"只需两分钟。我们会自动找到您的参议员。",
   locating:"正在根据您的位置查找参议员……", zipPh:"输入您的邮政编码 (ZIP)", findBtn:"查找", zipInstead:"改为输入邮政编码",
   locOff:"未开启定位 — 没关系。请输入您的邮政编码：", enterZip:"请输入邮政编码以查找您的参议员：", cantRead:"无法获取您的位置。请输入您的邮政编码：",
@@ -503,7 +579,8 @@ function senatorCard(sen,i){
   const tel=(sen.phone||"").replace(/[^0-9+]/g,"");
   const partyTxt=(I18N[currentLang].party&&I18N[currentLang].party[sen.party])||sen.party||"";
   return `
-  <div class="card sen" data-i="${i}">
+  <div class="card sen${isAg(sen)?' is-ag':''}" data-i="${i}">
+    ${isAg(sen)?`<div class="agbadge${PHASE==='markup'?' agbadge-hot':''}">${t("agBadge")}</div>`:""}
     <div class="sen-head">
       <img class="photo" src="${PHOTO_BASE}${sen.bioguide}.jpg" alt="${escapeHtml(sen.full)}" onerror="photoFail(this)" />
       <div class="sen-meta">
@@ -520,15 +597,19 @@ function senatorCard(sen,i){
     </div>
     <div class="drawer" data-drawer="call">
       <h4>${t("callHeading")}</h4>
-      <ul class="bullets">${CALL_BULLETS.map(b=>`<li>${escapeHtml(b)}</li>`).join("")}</ul>
+      <ul class="bullets">${callBullets().map(b=>`<li>${escapeHtml(b)}</li>`).join("")}</ul>
     </div>
     <div class="drawer" data-drawer="email">
       <h4>${t("emailHeading")}</h4>
       <p class="drawer-note">${t("emailNote")}</p>
-      <textarea data-body>${escapeHtml(emailBody(sen,supporter.name))}</textarea>
+      <div class="grid2" style="margin-bottom:10px">
+        <input type="text" data-ename placeholder="${t('yourName')}" autocomplete="name" value="${escapeHtml(supporter.name)}" />
+        <input type="text" data-etown placeholder="${t('yourTown')}" autocomplete="address-level2" value="${escapeHtml(supporter.town||'')}" />
+      </div>
+      <textarea data-body>${escapeHtml(emailBody(sen,supporter.name,supporter.town))}</textarea>
       <a class="btn btn-accent btn-block" data-form target="_blank" rel="noopener" href="${escapeHtml(sen.contactForm||sen.url||'#')}"><span aria-hidden="true">${icoCopy()}</span><span>${t("formSend")}</span></a>
       <div class="drawer-actions" style="margin-top:10px">
-        <a class="btn btn-ghost" data-send target="_blank" rel="noopener" href="mailto:?subject=${encodeURIComponent(EMAIL_SUBJECT)}&body=${encodeURIComponent(emailBody(sen,supporter.name))}"><span aria-hidden="true">${icoMail()}</span><span>${t("emailSend")}</span></a>
+        <a class="btn btn-ghost" data-send target="_blank" rel="noopener" href="mailto:?subject=${encodeURIComponent(EMAIL_SUBJECT)}&body=${encodeURIComponent(emailBody(sen,supporter.name,supporter.town))}"><span aria-hidden="true">${icoMail()}</span><span>${t("emailSend")}</span></a>
         <button class="btn btn-ghost" data-copy><span aria-hidden="true">${icoCopy()}</span><span>${t("emailCopy")}</span></button>
       </div>
     </div>
@@ -545,6 +626,9 @@ function wireCard(sen,i){
   setMailto();
   bodyA.addEventListener("input",setMailto);
   sendA.addEventListener("click",()=>setTimeout(markActed,800));
+  const en=card.querySelector("[data-ename]"), et=card.querySelector("[data-etown]");
+  if(en) en.addEventListener("input",()=>{supporter.name=en.value;refreshEmailBodies();});
+  if(et) et.addEventListener("input",()=>{supporter.town=et.value;refreshEmailBodies();});
   const formA=card.querySelector("[data-form]");
   if(formA) formA.addEventListener("click",async()=>{try{await navigator.clipboard.writeText(`${EMAIL_SUBJECT}\n\n${bodyA.value}`);}catch(e){}setTimeout(markActed,800);});
   card.querySelector("[data-copy]").addEventListener("click",async e=>{const lbl=e.currentTarget.querySelector("span:last-child");try{await navigator.clipboard.writeText(`${EMAIL_SUBJECT}\n\n${bodyA.value}`);lbl.textContent=t("copied");setTimeout(()=>lbl.textContent=t("emailCopy"),1500);}catch(err){}markActed();});
@@ -553,9 +637,9 @@ let acted=false;
 function markActed(){ if(acted)return; acted=true; $("#toast").classList.add("show"); $("#cue").classList.add("hide"); }
 function hideToast(){ $("#toast").classList.remove("show"); }
 function toastShareAction(){ const txt=t("shareText"),url=PROD_URL; if(navigator.share){navigator.share({title:"Save Our Pigs",text:txt,url}).catch(()=>{});} else {$("#slide4").scrollIntoView({behavior:"smooth"});} hideToast(); }
-function refreshEmailBodies(){document.querySelectorAll(".sen").forEach(c=>{const i=+c.dataset.i,ta=c.querySelector("[data-body]");if(ta&&currentList[i]){ta.value=emailBody(currentList[i],supporter.name);const a=c.querySelector("[data-send]");if(a)a.setAttribute("href",`mailto:?subject=${encodeURIComponent(EMAIL_SUBJECT)}&body=${encodeURIComponent(ta.value)}`);}});}
+function refreshEmailBodies(){document.querySelectorAll(".sen").forEach(c=>{const i=+c.dataset.i,ta=c.querySelector("[data-body]");if(ta&&currentList[i]){ta.value=emailBody(currentList[i],supporter.name,supporter.town);const a=c.querySelector("[data-send]");if(a)a.setAttribute("href",`mailto:?subject=${encodeURIComponent(EMAIL_SUBJECT)}&body=${encodeURIComponent(ta.value)}`);const en=c.querySelector("[data-ename]");if(en&&document.activeElement!==en)en.value=supporter.name;const et=c.querySelector("[data-etown]");if(et&&document.activeElement!==et)et.value=supporter.town||"";}});}
 function downloadVCard(sen){
-  const vcard=`BEGIN:VCARD\nVERSION:3.0\nN:${sen.last};${sen.first};;Sen.;\nFN:Sen. ${sen.full}\nORG:U.S. Senate\nTITLE:U.S. Senator (${STATE_NAMES[sen.state]||sen.state})\nTEL;TYPE=WORK,VOICE:${sen.phone}\nNOTE:Call to ask: strip the Save Our Bacon Act from the Farm Bill.\nEND:VCARD`;
+  const vcard=`BEGIN:VCARD\nVERSION:3.0\nN:${sen.last};${sen.first};;Sen.;\nFN:Sen. ${sen.full}\nORG:U.S. Senate\nTITLE:U.S. Senator (${STATE_NAMES[sen.state]||sen.state})\nTEL;TYPE=WORK,VOICE:${sen.phone}\nNOTE:Call: keep the Save Our Bacon Act out of the Farm Bill.\nEND:VCARD`;
   const blob=new Blob([vcard],{type:"text/vcard"});const url=URL.createObjectURL(blob);const a=document.createElement("a");a.href=url;a.download=`Sen_${sen.last}.vcf`;document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),2000);
 }
 
@@ -614,6 +698,29 @@ function renderVoices(){
   document.body.appendChild(s);
 }
 
+/* ============== phase (hero line + urgency banner) ============== */
+function applyPhase(){
+  const pl=$("#phaseline"); if(pl) pl.textContent=t("phaseHero_"+PHASE);
+  const b=$("#banner"); if(b){ const bt=t("banner_"+PHASE); if(bt){ b.textContent=bt; b.classList.remove("is-hidden"); } else { b.classList.add("is-hidden"); b.textContent=""; } }
+}
+
+/* ============== "what happens next" timeline ============== */
+const TIMELINE=[{key:"draft",done:true},{key:"markup",phase:"markup"},{key:"floor",phase:"floor"},{key:"conf"}];
+function tlStatus(it){
+  if(it.done) return "done";
+  if(it.phase===PHASE) return "now";
+  if(PHASE==="pre_markup" && it.key==="markup") return "now";   // next danger point
+  return "future";
+}
+function renderTimeline(){
+  const el=$("#timeline"); if(!el) return;
+  el.innerHTML=TIMELINE.map(it=>{
+    const st=tlStatus(it);
+    const now = st==="now" ? `<span class="tl-now-label">${t("tlNow")}</span>` : "";
+    return `<div class="tl-item tl-${st}"><div class="tl-dot"></div><div><div class="tl-t">${t("tl_"+it.key+"_t")}${now}</div><div class="tl-d">${t("tl_"+it.key+"_d")}</div></div></div>`;
+  }).join("");
+}
+
 /* ============== apply language ============== */
 function applyLang(lang){
   currentLang=lang; try{localStorage.setItem("sop-lang",lang);}catch(e){}
@@ -622,7 +729,7 @@ function applyLang(lang){
   document.querySelectorAll("[data-i18n-html]").forEach(el=>el.innerHTML=t(el.dataset.i18nHtml));
   document.querySelectorAll("[data-i18n-ph]").forEach(el=>el.placeholder=t(el.dataset.i18nPh));
   document.querySelectorAll(".langs button").forEach(b=>b.classList.toggle("on",b.dataset.lang===lang));
-  applyStatus(); renderAccordion(); renderShare(); renderVoices();
+  applyStatus(); applyPhase(); renderTimeline(); renderAccordion(); renderShare(); renderVoices();
   if(currentStateAbbr) renderSenators();
 }
 
